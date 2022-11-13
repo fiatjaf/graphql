@@ -1,16 +1,14 @@
 package handler
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 )
 
 type playgroundData struct {
-	PlaygroundVersion    string
-	Endpoint             string
-	SubscriptionEndpoint string
-	SetTitle             bool
+	PlaygroundVersion string
+	Endpoint          string
+	SetTitle          bool
 }
 
 // renderPlayground renders the Playground GUI
@@ -23,10 +21,9 @@ func renderPlayground(w http.ResponseWriter, r *http.Request) {
 	}
 
 	d := playgroundData{
-		PlaygroundVersion:    graphcoolPlaygroundVersion,
-		Endpoint:             r.URL.Path,
-		SubscriptionEndpoint: fmt.Sprintf("ws://%v/subscriptions", r.Host),
-		SetTitle:             true,
+		PlaygroundVersion: graphcoolPlaygroundVersion,
+		Endpoint:          r.URL.Path,
+		SetTitle:          true,
 	}
 	err = t.ExecuteTemplate(w, "index", d)
 	if err != nil {
@@ -98,8 +95,11 @@ add "&raw" to the end of the URL within a browser.
       GraphQLPlayground.init(document.getElementById('root'), {
         // options as 'endpoint' belong here
         endpoint: {{ .Endpoint }},
-        subscriptionEndpoint: {{ .SubscriptionEndpoint }},
-        setTitle: {{ .SetTitle }}
+        subscriptionEndpoint: {{ .Endpoint }},
+        setTitle: {{ .SetTitle }},
+        settings: {
+          'schema.polling.enable': false
+        }
       })
     })</script>
 </body>

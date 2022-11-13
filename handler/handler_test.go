@@ -1,6 +1,7 @@
 package handler_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,13 +11,11 @@ import (
 	"strings"
 	"testing"
 
-	"context"
-
 	"github.com/fiatjaf/graphql"
 	"github.com/fiatjaf/graphql/gqlerrors"
+	"github.com/fiatjaf/graphql/handler"
 	"github.com/fiatjaf/graphql/language/location"
 	"github.com/fiatjaf/graphql/testutil"
-	"github.com/fiatjaf/graphql/handler"
 )
 
 func decodeResponse(t *testing.T, recorder *httptest.ResponseRecorder) *graphql.Result {
@@ -35,6 +34,7 @@ func decodeResponse(t *testing.T, recorder *httptest.ResponseRecorder) *graphql.
 	}
 	return &target
 }
+
 func executeTest(t *testing.T, h *handler.Handler, req *http.Request) (*graphql.Result, *httptest.ResponseRecorder) {
 	resp := httptest.NewRecorder()
 	h.ServeHTTP(resp, req)
@@ -165,7 +165,6 @@ func TestHandler_Params_NilParams(t *testing.T) {
 		t.Fatalf("expected to panic, did not panic")
 	}()
 	_ = handler.New(nil)
-
 }
 
 func TestHandler_BasicQuery_WithRootObjFn(t *testing.T) {
@@ -245,7 +244,7 @@ func TestHandler_BasicQuery_WithFormatErrorFn(t *testing.T) {
 	customFormattedError := gqlerrors.FormattedError{
 		Message: resolverError.Error(),
 		Locations: []location.SourceLocation{
-			location.SourceLocation{
+			{
 				Line:   1,
 				Column: 2,
 			},

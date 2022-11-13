@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/fiatjaf/graphql/gqlerrors"
+	"github.com/fiatjaf/graphql/language/ast"
 	"github.com/fiatjaf/graphql/language/parser"
 	"github.com/fiatjaf/graphql/language/source"
 )
@@ -33,25 +34,41 @@ type Params struct {
 	Context context.Context
 }
 
+// DoChannel performs both sync and asynchronous operations (subscriptions), it returns a channel
+// of results instead of a single result
+func DoAsync(p Params) chan *Result {
+	return do(p, false)
+}
+
+// Do executes synchronous operations, ignores subscriptions
 func Do(p Params) *Result {
+	ch := do(p, true)
+	return <-ch
+}
+
+func do(p Params, skipSubscriptions bool) chan *Result {
 	source := source.NewSource(&source.Source{
 		Body: []byte(p.RequestString),
 		Name: "GraphQL request",
 	})
 
+	wrapErr := func(gqlerr gqlerrors.FormattedErrors) chan *Result {
+		singleEventChannel := make(chan *Result)
+		go func() {
+			singleEventChannel <- &Result{Errors: gqlerr}
+		}()
+		return singleEventChannel
+	}
+
 	// run init on the extensions
 	extErrs := handleExtensionsInits(&p)
 	if len(extErrs) != 0 {
-		return &Result{
-			Errors: extErrs,
-		}
+		return wrapErr(extErrs)
 	}
 
 	extErrs, parseFinishFn := handleExtensionsParseDidStart(&p)
 	if len(extErrs) != 0 {
-		return &Result{
-			Errors: extErrs,
-		}
+		return wrapErr(extErrs)
 	}
 
 	// parse the source
@@ -62,25 +79,19 @@ func Do(p Params) *Result {
 
 		// merge the errors from extensions and the original error from parser
 		extErrs = append(extErrs, gqlerrors.FormatErrors(err)...)
-		return &Result{
-			Errors: extErrs,
-		}
+		return wrapErr(extErrs)
 	}
 
 	// run parseFinish functions for extensions
 	extErrs = parseFinishFn(err)
 	if len(extErrs) != 0 {
-		return &Result{
-			Errors: extErrs,
-		}
+		return wrapErr(extErrs)
 	}
 
 	// notify extensions about the start of the validation
 	extErrs, validationFinishFn := handleExtensionsValidationDidStart(&p)
 	if len(extErrs) != 0 {
-		return &Result{
-			Errors: extErrs,
-		}
+		return wrapErr(extErrs)
 	}
 
 	// validate document
@@ -92,25 +103,33 @@ func Do(p Params) *Result {
 
 		// merge the errors from extensions and the original error from parser
 		extErrs = append(extErrs, validationResult.Errors...)
-		return &Result{
-			Errors: extErrs,
-		}
+		return wrapErr(extErrs)
 	}
 
 	// run the validationFinishFuncs for extensions
 	extErrs = validationFinishFn(validationResult.Errors)
 	if len(extErrs) != 0 {
-		return &Result{
-			Errors: extErrs,
-		}
+		return wrapErr(extErrs)
 	}
 
-	return Execute(ExecuteParams{
+	params := ExecuteParams{
 		Schema:        p.Schema,
 		Root:          p.RootObject,
 		AST:           AST,
 		OperationName: p.OperationName,
 		Args:          p.VariableValues,
 		Context:       p.Context,
-	})
+	}
+
+	if !skipSubscriptions &&
+		len(AST.Definitions) > 0 &&
+		AST.Definitions[0].(*ast.OperationDefinition).Operation == "subscription" {
+		return ExecuteSubscription(params)
+	} else {
+		singleEventChannel := make(chan *Result)
+		go func() {
+			singleEventChannel <- Execute(params)
+		}()
+		return singleEventChannel
+	}
 }
