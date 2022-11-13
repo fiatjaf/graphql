@@ -72,15 +72,22 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 		return
 	}
 	ticker := time.NewTicker(pingPeriod)
-
 	ws := &WebSocket{conn: conn}
+
+	terminateConnection := func() {
+		ticker.Stop()
+		conn.Close()
+
+		h.subscriptionCancellers.Range(func(id string, cancel context.CancelFunc) bool {
+			h.subscriptionCancellers.Delete(id)
+			cancel()
+			return true
+		})
+	}
 
 	// reader
 	go func() {
-		defer func() {
-			ticker.Stop()
-			conn.Close()
-		}()
+		defer terminateConnection()
 
 		conn.SetReadLimit(maxMessageSize)
 		conn.SetReadDeadline(time.Now().Add(pongWait))
@@ -123,12 +130,15 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 						return
 					}
 
+					cancellableCtx, cancel := context.WithCancel(ctx)
+					h.subscriptionCancellers.Store(msg.ID, cancel)
+
 					params := graphql.Params{
 						Schema:         *h.Schema,
 						RequestString:  payload.Query,
 						VariableValues: payload.Variables,
 						OperationName:  payload.OperationName,
-						Context:        ctx,
+						Context:        cancellableCtx,
 					}
 					ch := graphql.DoAsync(params)
 					for result := range ch {
@@ -139,6 +149,12 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 							Payload: json.RawMessage(b),
 						})
 					}
+				case "stop":
+					// cancel the context for this subscription such that we stop streaming graphql data into nowhere
+					if cancel, ok := h.subscriptionCancellers.Load(msg.ID); ok {
+						h.subscriptionCancellers.Delete(msg.ID)
+						cancel()
+					}
 				}
 			}(message)
 		}
@@ -146,10 +162,7 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 
 	// writer
 	go func() {
-		defer func() {
-			ticker.Stop()
-			conn.Close()
-		}()
+		defer terminateConnection()
 
 		for {
 			select {

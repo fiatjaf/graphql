@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	syncmap "github.com/SaveTheRbtz/generic-sync-map-go"
 	"github.com/fiatjaf/graphql"
 	"github.com/fiatjaf/graphql/gqlerrors"
 )
@@ -17,14 +18,15 @@ const (
 type ResultCallbackFn func(ctx context.Context, params *graphql.Params, result *graphql.Result, responseBody []byte)
 
 type Handler struct {
-	Schema           *graphql.Schema
-	pretty           bool
-	graphiql         bool
-	playground       bool
-	websocket        bool
-	rootObjectFn     RootObjectFn
-	resultCallbackFn ResultCallbackFn
-	formatErrorFn    func(err error) gqlerrors.FormattedError
+	Schema                 *graphql.Schema
+	pretty                 bool
+	graphiql               bool
+	playground             bool
+	websocket              bool
+	rootObjectFn           RootObjectFn
+	resultCallbackFn       ResultCallbackFn
+	formatErrorFn          func(err error) gqlerrors.FormattedError
+	subscriptionCancellers syncmap.MapOf[string, context.CancelFunc]
 }
 
 type RequestOptions struct {
