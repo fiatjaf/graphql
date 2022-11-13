@@ -4,7 +4,7 @@ This document is based on the [Node.js contribution guidelines](https://github.c
 
 ## Chat room
 
-[![Join the chat at https://gitter.im/graphql-go/graphql](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/graphql-go/graphql?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/fiatjaf/graphql](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/fiatjaf/graphql?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Feel free to participate in the chat room for informal discussions and queries.
 
@@ -55,8 +55,8 @@ The basics are as follows:
 2. `go get` the upstream repo and set it up as the `upstream` remote and your own repo as the `origin` remote:
 
 ```bash
-$ go get github.com/graphql-go/graphql
-$ cd $GOPATH/src/github.com/graphql-go/graphql
+$ go get github.com/fiatjaf/graphql
+$ cd $GOPATH/src/github.com/fiatjaf/graphql
 $ git remote rename origin upstream
 $ git remote add origin git@github.com/YOUR_GITHUB_NAME/graphql
 ```
