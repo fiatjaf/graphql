@@ -1,11 +1,10 @@
 package visitor_test
 
 import (
+	"fmt"
 	"io/ioutil"
 	"reflect"
 	"testing"
-
-	"fmt"
 
 	"github.com/fiatjaf/graphql"
 	"github.com/fiatjaf/graphql/language/ast"
@@ -30,7 +29,6 @@ func parse(t *testing.T, query string) *ast.Document {
 }
 
 func TestVisitor_AllowsEditingANodeBothOnEnterAndOnLeave(t *testing.T) {
-
 	query := `{ a, b, c { a, b, c } }`
 	astDoc := parse(t, query)
 
@@ -50,7 +48,6 @@ func TestVisitor_AllowsEditingANodeBothOnEnterAndOnLeave(t *testing.T) {
 	}
 
 	v := &visitor.VisitorOptions{
-
 		KindFuncMap: map[string]visitor.NamedVisitFuncs{
 			kinds.OperationDefinition: {
 				Enter: func(p visitor.VisitFuncParams) (string, interface{}) {
@@ -96,10 +93,9 @@ func TestVisitor_AllowsEditingANodeBothOnEnterAndOnLeave(t *testing.T) {
 	if !reflect.DeepEqual(visited, expectedVisited) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expectedVisited, visited))
 	}
-
 }
-func TestVisitor_AllowsEditingTheRootNodeOnEnterAndOnLeave(t *testing.T) {
 
+func TestVisitor_AllowsEditingTheRootNodeOnEnterAndOnLeave(t *testing.T) {
 	query := `{ a, b, c { a, b, c } }`
 	astDoc := parse(t, query)
 
@@ -119,7 +115,6 @@ func TestVisitor_AllowsEditingTheRootNodeOnEnterAndOnLeave(t *testing.T) {
 	}
 
 	v := &visitor.VisitorOptions{
-
 		KindFuncMap: map[string]visitor.NamedVisitFuncs{
 			kinds.Document: {
 				Enter: func(p visitor.VisitFuncParams) (string, interface{}) {
@@ -155,8 +150,8 @@ func TestVisitor_AllowsEditingTheRootNodeOnEnterAndOnLeave(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expectedVisited, visited))
 	}
 }
-func TestVisitor_AllowsForEditingOnEnter(t *testing.T) {
 
+func TestVisitor_AllowsForEditingOnEnter(t *testing.T) {
 	query := `{ a, b, c { a, b, c } }`
 	astDoc := parse(t, query)
 
@@ -178,10 +173,9 @@ func TestVisitor_AllowsForEditingOnEnter(t *testing.T) {
 	if !reflect.DeepEqual(expectedAST, editedAst) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expectedAST, editedAst))
 	}
-
 }
-func TestVisitor_AllowsForEditingOnLeave(t *testing.T) {
 
+func TestVisitor_AllowsForEditingOnLeave(t *testing.T) {
 	query := `{ a, b, c { a, b, c } }`
 	astDoc := parse(t, query)
 
@@ -206,7 +200,6 @@ func TestVisitor_AllowsForEditingOnLeave(t *testing.T) {
 }
 
 func TestVisitor_VisitsEditedNode(t *testing.T) {
-
 	query := `{ a { x } }`
 	astDoc := parse(t, query)
 
@@ -246,8 +239,8 @@ func TestVisitor_VisitsEditedNode(t *testing.T) {
 		t.Fatalf("Unexpected result, expected didVisitAddedField == true")
 	}
 }
-func TestVisitor_AllowsSkippingASubTree(t *testing.T) {
 
+func TestVisitor_AllowsSkippingASubTree(t *testing.T) {
 	query := `{ a, b { x }, c }`
 	astDoc := parse(t, query)
 
@@ -308,7 +301,6 @@ func TestVisitor_AllowsSkippingASubTree(t *testing.T) {
 }
 
 func TestVisitor_AllowsEarlyExitWhileVisiting(t *testing.T) {
-
 	visited := []interface{}{}
 
 	query := `{ a, b { x }, c }`
@@ -366,7 +358,6 @@ func TestVisitor_AllowsEarlyExitWhileVisiting(t *testing.T) {
 }
 
 func TestVisitor_AllowsEarlyExitWhileLeaving(t *testing.T) {
-
 	visited := []interface{}{}
 
 	query := `{ a, b { x }, c }`
@@ -425,7 +416,6 @@ func TestVisitor_AllowsEarlyExitWhileLeaving(t *testing.T) {
 }
 
 func TestVisitor_AllowsANamedFunctionsVisitorAPI(t *testing.T) {
-
 	query := `{ a, b { x }, c }`
 	astDoc := parse(t, query)
 
@@ -477,6 +467,7 @@ func TestVisitor_AllowsANamedFunctionsVisitorAPI(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expectedVisited, visited))
 	}
 }
+
 func TestVisitor_VisitsKitchenSink(t *testing.T) {
 	b, err := ioutil.ReadFile("../../kitchen-sink.graphql")
 	if err != nil {
@@ -825,7 +816,6 @@ func TestVisitor_VisitsKitchenSink(t *testing.T) {
 }
 
 func TestVisitor_VisitInParallel_AllowsSkippingASubTree(t *testing.T) {
-
 	// Note: nearly identical to the above test of the same test but
 	// using visitInParallel.
 
@@ -889,7 +879,6 @@ func TestVisitor_VisitInParallel_AllowsSkippingASubTree(t *testing.T) {
 }
 
 func TestVisitor_VisitInParallel_AllowsSkippingDifferentSubTrees(t *testing.T) {
-
 	query := `{ a { x }, b { y} }`
 	astDoc := parse(t, query)
 
@@ -1000,7 +989,6 @@ func TestVisitor_VisitInParallel_AllowsSkippingDifferentSubTrees(t *testing.T) {
 }
 
 func TestVisitor_VisitInParallel_AllowsEarlyExitWhileVisiting(t *testing.T) {
-
 	// Note: nearly identical to the above test of the same test but
 	// using visitInParallel.
 
@@ -1061,7 +1049,6 @@ func TestVisitor_VisitInParallel_AllowsEarlyExitWhileVisiting(t *testing.T) {
 }
 
 func TestVisitor_VisitInParallel_AllowsEarlyExitFromDifferentPoints(t *testing.T) {
-
 	visited := []interface{}{}
 
 	query := `{ a { y }, b { x } }`
@@ -1154,7 +1141,6 @@ func TestVisitor_VisitInParallel_AllowsEarlyExitFromDifferentPoints(t *testing.T
 }
 
 func TestVisitor_VisitInParallel_AllowsEarlyExitWhileLeaving(t *testing.T) {
-
 	visited := []interface{}{}
 
 	query := `{ a, b { x }, c }`
@@ -1213,7 +1199,6 @@ func TestVisitor_VisitInParallel_AllowsEarlyExitWhileLeaving(t *testing.T) {
 }
 
 func TestVisitor_VisitInParallel_AllowsEarlyExitFromLeavingDifferentPoints(t *testing.T) {
-
 	visited := []interface{}{}
 
 	query := `{ a { y }, b { x } }`
@@ -1326,7 +1311,6 @@ func TestVisitor_VisitInParallel_AllowsEarlyExitFromLeavingDifferentPoints(t *te
 }
 
 func TestVisitor_VisitInParallel_AllowsForEditingOnEnter(t *testing.T) {
-
 	visited := []interface{}{}
 
 	query := `{ a, b, c { a, b, c } }`
@@ -1404,7 +1388,6 @@ func TestVisitor_VisitInParallel_AllowsForEditingOnEnter(t *testing.T) {
 }
 
 func TestVisitor_VisitInParallel_AllowsForEditingOnLeave(t *testing.T) {
-
 	visited := []interface{}{}
 
 	query := `{ a, b, c { a, b, c } }`
@@ -1493,7 +1476,6 @@ func TestVisitor_VisitInParallel_AllowsForEditingOnLeave(t *testing.T) {
 }
 
 func TestVisitor_VisitWithTypeInfo_MaintainsTypeInfoDuringVisit(t *testing.T) {
-
 	visited := []interface{}{}
 
 	typeInfo := graphql.NewTypeInfo(&graphql.TypeInfoConfig{
@@ -1600,11 +1582,9 @@ func TestVisitor_VisitWithTypeInfo_MaintainsTypeInfoDuringVisit(t *testing.T) {
 	if !reflect.DeepEqual(visited, expectedVisited) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expectedVisited, visited))
 	}
-
 }
 
 func TestVisitor_VisitWithTypeInfo_MaintainsTypeInfoDuringEdit(t *testing.T) {
-
 	visited := []interface{}{}
 
 	typeInfo := graphql.NewTypeInfo(&graphql.TypeInfoConfig{
@@ -1744,5 +1724,4 @@ func TestVisitor_VisitWithTypeInfo_MaintainsTypeInfoDuringEdit(t *testing.T) {
 	if !reflect.DeepEqual(visited, expectedVisited) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expectedVisited, visited))
 	}
-
 }

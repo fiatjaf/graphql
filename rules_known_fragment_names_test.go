@@ -33,6 +33,7 @@ func TestValidate_KnownFragmentNames_KnownFragmentNamesAreValid(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownFragmentNames_UnknownFragmentNamesAreInvalid(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownFragmentNamesRule, `
       {

@@ -13,8 +13,7 @@ import (
 var TestSchema *graphql.Schema
 
 func init() {
-
-	var beingInterface = graphql.NewInterface(graphql.InterfaceConfig{
+	beingInterface := graphql.NewInterface(graphql.InterfaceConfig{
 		Name: "Being",
 		Fields: graphql.Fields{
 			"name": &graphql.Field{
@@ -27,7 +26,7 @@ func init() {
 			},
 		},
 	})
-	var petInterface = graphql.NewInterface(graphql.InterfaceConfig{
+	petInterface := graphql.NewInterface(graphql.InterfaceConfig{
 		Name: "Pet",
 		Fields: graphql.Fields{
 			"name": &graphql.Field{
@@ -40,7 +39,7 @@ func init() {
 			},
 		},
 	})
-	var canineInterface = graphql.NewInterface(graphql.InterfaceConfig{
+	canineInterface := graphql.NewInterface(graphql.InterfaceConfig{
 		Name: "Canine",
 		Fields: graphql.Fields{
 			"name": &graphql.Field{
@@ -53,7 +52,7 @@ func init() {
 			},
 		},
 	})
-	var dogCommandEnum = graphql.NewEnum(graphql.EnumConfig{
+	dogCommandEnum := graphql.NewEnum(graphql.EnumConfig{
 		Name: "DogCommand",
 		Values: graphql.EnumValueConfigMap{
 			"SIT": &graphql.EnumValueConfig{
@@ -67,7 +66,7 @@ func init() {
 			},
 		},
 	})
-	var dogType = graphql.NewObject(graphql.ObjectConfig{
+	dogType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Dog",
 		IsTypeOf: func(p graphql.IsTypeOfParams) bool {
 			return true
@@ -128,7 +127,7 @@ func init() {
 			canineInterface,
 		},
 	})
-	var furColorEnum = graphql.NewEnum(graphql.EnumConfig{
+	furColorEnum := graphql.NewEnum(graphql.EnumConfig{
 		Name: "FurColor",
 		Values: graphql.EnumValueConfigMap{
 			"BROWN": &graphql.EnumValueConfig{
@@ -146,7 +145,7 @@ func init() {
 		},
 	})
 
-	var catType = graphql.NewObject(graphql.ObjectConfig{
+	catType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Cat",
 		IsTypeOf: func(p graphql.IsTypeOfParams) bool {
 			return true
@@ -178,14 +177,14 @@ func init() {
 			petInterface,
 		},
 	})
-	var catOrDogUnion = graphql.NewUnion(graphql.UnionConfig{
+	catOrDogUnion := graphql.NewUnion(graphql.UnionConfig{
 		Name: "CatOrDog",
 		Types: []*graphql.Object{
 			dogType,
 			catType,
 		},
 	})
-	var intelligentInterface = graphql.NewInterface(graphql.InterfaceConfig{
+	intelligentInterface := graphql.NewInterface(graphql.InterfaceConfig{
 		Name: "Intelligent",
 		Fields: graphql.Fields{
 			"iq": &graphql.Field{
@@ -194,7 +193,7 @@ func init() {
 		},
 	})
 
-	var humanType = graphql.NewObject(graphql.ObjectConfig{
+	humanType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Human",
 		IsTypeOf: func(p graphql.IsTypeOfParams) bool {
 			return true
@@ -225,7 +224,7 @@ func init() {
 		Type: graphql.NewList(humanType),
 	})
 
-	var alienType = graphql.NewObject(graphql.ObjectConfig{
+	alienType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Alien",
 		IsTypeOf: func(p graphql.IsTypeOfParams) bool {
 			return true
@@ -251,7 +250,7 @@ func init() {
 			},
 		},
 	})
-	var dogOrHumanUnion = graphql.NewUnion(graphql.UnionConfig{
+	dogOrHumanUnion := graphql.NewUnion(graphql.UnionConfig{
 		Name: "DogOrHuman",
 		Types: []*graphql.Object{
 			dogType,
@@ -262,7 +261,7 @@ func init() {
 			return nil
 		},
 	})
-	var humanOrAlienUnion = graphql.NewUnion(graphql.UnionConfig{
+	humanOrAlienUnion := graphql.NewUnion(graphql.UnionConfig{
 		Name: "HumanOrAlien",
 		Types: []*graphql.Object{
 			alienType,
@@ -274,7 +273,7 @@ func init() {
 		},
 	})
 
-	var complexInputObject = graphql.NewInputObject(graphql.InputObjectConfig{
+	complexInputObject := graphql.NewInputObject(graphql.InputObjectConfig{
 		Name: "ComplexInput",
 		Fields: graphql.InputObjectConfigFieldMap{
 			"requiredField": &graphql.InputObjectFieldConfig{
@@ -294,7 +293,7 @@ func init() {
 			},
 		},
 	})
-	var complicatedArgs = graphql.NewObject(graphql.ObjectConfig{
+	complicatedArgs := graphql.NewObject(graphql.ObjectConfig{
 		Name: "ComplicatedArgs",
 		// TODO List
 		// TODO Coercion
@@ -543,8 +542,8 @@ func init() {
 		panic(err)
 	}
 	TestSchema = &schema
-
 }
+
 func expectValidRule(t *testing.T, schema *graphql.Schema, rules []graphql.ValidationRuleFn, queryString string) {
 	source := source.NewSource(&source.Source{
 		Body: []byte(queryString),
@@ -560,8 +559,8 @@ func expectValidRule(t *testing.T, schema *graphql.Schema, rules []graphql.Valid
 	if result.IsValid != true {
 		t.Fatalf("IsValid should be true, got %v", result.IsValid)
 	}
-
 }
+
 func expectInvalidRule(t *testing.T, schema *graphql.Schema, rules []graphql.ValidationRuleFn, queryString string, expectedErrors []gqlerrors.FormattedError) {
 	source := source.NewSource(&source.Source{
 		Body: []byte(queryString),
@@ -589,20 +588,24 @@ func expectInvalidRule(t *testing.T, schema *graphql.Schema, rules []graphql.Val
 			t.Fatalf("Unexpected result, Diff: %v", Diff(expectedErrors, result.Errors))
 		}
 	}
-
 }
+
 func ExpectPassesRule(t *testing.T, rule graphql.ValidationRuleFn, queryString string) {
 	expectValidRule(t, TestSchema, []graphql.ValidationRuleFn{rule}, queryString)
 }
+
 func ExpectFailsRule(t *testing.T, rule graphql.ValidationRuleFn, queryString string, expectedErrors []gqlerrors.FormattedError) {
 	expectInvalidRule(t, TestSchema, []graphql.ValidationRuleFn{rule}, queryString, expectedErrors)
 }
+
 func ExpectFailsRuleWithSchema(t *testing.T, schema *graphql.Schema, rule graphql.ValidationRuleFn, queryString string, expectedErrors []gqlerrors.FormattedError) {
 	expectInvalidRule(t, schema, []graphql.ValidationRuleFn{rule}, queryString, expectedErrors)
 }
+
 func ExpectPassesRuleWithSchema(t *testing.T, schema *graphql.Schema, rule graphql.ValidationRuleFn, queryString string) {
 	expectValidRule(t, schema, []graphql.ValidationRuleFn{rule}, queryString)
 }
+
 func RuleError(message string, locs ...int) gqlerrors.FormattedError {
 	locations := []location.SourceLocation{}
 	for i := 0; i < len(locs); i += 2 {

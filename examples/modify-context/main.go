@@ -42,10 +42,9 @@ func main() {
 						rootValue := p.Info.RootValue.(map[string]interface{})
 						rootValue["data-from-parent"] = "ok"
 						result := []User{
-							User{ID: 1},
+							{ID: 1},
 						}
 						return result, nil
-
 					},
 				},
 			},

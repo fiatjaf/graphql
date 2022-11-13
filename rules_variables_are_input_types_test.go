@@ -15,6 +15,7 @@ func TestValidate_VariablesAreInputTypes_(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_VariablesAreInputTypes_1(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.VariablesAreInputTypesRule, `
       query Foo($a: Dog, $b: [[CatOrDog!]]!, $c: Pet) {

@@ -15,6 +15,7 @@ func TestValidate_UniqueOperationNames_NoOperations(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueOperationNames_OneAnonOperation(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueOperationNamesRule, `
       {
@@ -22,6 +23,7 @@ func TestValidate_UniqueOperationNames_OneAnonOperation(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueOperationNames_OneNamedOperation(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueOperationNamesRule, `
       query Foo {
@@ -29,6 +31,7 @@ func TestValidate_UniqueOperationNames_OneNamedOperation(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueOperationNames_MultipleOperations(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueOperationNamesRule, `
       query Foo {
@@ -40,6 +43,7 @@ func TestValidate_UniqueOperationNames_MultipleOperations(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueOperationNames_MultipleOperationsOfDifferentTypes(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueOperationNamesRule, `
       query Foo {
@@ -55,6 +59,7 @@ func TestValidate_UniqueOperationNames_MultipleOperationsOfDifferentTypes(t *tes
       }
     `)
 }
+
 func TestValidate_UniqueOperationNames_FragmentAndOperationNamedTheSame(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueOperationNamesRule, `
       query Foo {
@@ -65,6 +70,7 @@ func TestValidate_UniqueOperationNames_FragmentAndOperationNamedTheSame(t *testi
       }
     `)
 }
+
 func TestValidate_UniqueOperationNames_MultipleOperationsOfSameName(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueOperationNamesRule, `
       query Foo {
@@ -77,6 +83,7 @@ func TestValidate_UniqueOperationNames_MultipleOperationsOfSameName(t *testing.T
 		testutil.RuleError(`There can only be one operation named "Foo".`, 2, 13, 5, 13),
 	})
 }
+
 func TestValidate_UniqueOperationNames_MultipleOperationsOfSameNameOfDifferentTypes_Mutation(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueOperationNamesRule, `
       query Foo {

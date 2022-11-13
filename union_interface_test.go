@@ -9,10 +9,8 @@ import (
 	"github.com/fiatjaf/graphql/testutil"
 )
 
-type testNamedType interface {
-}
-type testPet interface {
-}
+type testNamedType interface{}
+type testPet interface{}
 type testDog2 struct {
 	Name  string `json:"name"`
 	Barks bool   `json:"barks"`
@@ -37,6 +35,7 @@ var namedType = graphql.NewInterface(graphql.InterfaceConfig{
 		},
 	},
 })
+
 var dogType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Dog",
 	Interfaces: []*graphql.Interface{
@@ -55,6 +54,7 @@ var dogType = graphql.NewObject(graphql.ObjectConfig{
 		return ok
 	},
 })
+
 var catType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Cat",
 	Interfaces: []*graphql.Interface{
@@ -73,6 +73,7 @@ var catType = graphql.NewObject(graphql.ObjectConfig{
 		return ok
 	},
 })
+
 var petType = graphql.NewUnion(graphql.UnionConfig{
 	Name: "Pet",
 	Types: []*graphql.Object{
@@ -88,6 +89,7 @@ var petType = graphql.NewUnion(graphql.UnionConfig{
 		return nil
 	},
 })
+
 var personType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Person",
 	Interfaces: []*graphql.Interface{
@@ -115,11 +117,13 @@ var unionInterfaceTestSchema, _ = graphql.NewSchema(graphql.SchemaConfig{
 	Types: []graphql.Type{petType},
 })
 
-var garfield = &testCat2{"Garfield", false}
-var odie = &testDog2{"Odie", true}
-var liz = &testPerson{
-	Name: "Liz",
-}
+var (
+	garfield = &testCat2{"Garfield", false}
+	odie     = &testDog2{"Odie", true}
+	liz      = &testPerson{
+		Name: "Liz",
+	}
+)
 var john = &testPerson{
 	Name: "John",
 	Pets: []testPet{
@@ -212,6 +216,7 @@ func TestUnionIntersectionTypes_CanIntrospectOnUnionAndIntersectionTypes(t *test
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected.Data, result.Data))
 	}
 }
+
 func TestUnionIntersectionTypes_ExecutesUsingUnionTypes(t *testing.T) {
 	// NOTE: This is an *invalid* query, but it should be an *executable* query.
 	doc := `
@@ -261,6 +266,7 @@ func TestUnionIntersectionTypes_ExecutesUsingUnionTypes(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestUnionIntersectionTypes_ExecutesUnionTypesWithInlineFragments(t *testing.T) {
 	// This is the valid version of the query in the above test.
 	doc := `
@@ -315,8 +321,8 @@ func TestUnionIntersectionTypes_ExecutesUnionTypesWithInlineFragments(t *testing
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestUnionIntersectionTypes_ExecutesUsingInterfaceTypes(t *testing.T) {
 
+func TestUnionIntersectionTypes_ExecutesUsingInterfaceTypes(t *testing.T) {
 	// NOTE: This is an *invalid* query, but it should be an *executable* query.
 	doc := `
       {
@@ -364,8 +370,8 @@ func TestUnionIntersectionTypes_ExecutesUsingInterfaceTypes(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestUnionIntersectionTypes_ExecutesInterfaceTypesWithInlineFragments(t *testing.T) {
 
+func TestUnionIntersectionTypes_ExecutesInterfaceTypesWithInlineFragments(t *testing.T) {
 	// This is the valid version of the query in the above test.
 	doc := `
       {
@@ -419,7 +425,6 @@ func TestUnionIntersectionTypes_ExecutesInterfaceTypesWithInlineFragments(t *tes
 }
 
 func TestUnionIntersectionTypes_AllowsFragmentConditionsToBeAbstractTypes(t *testing.T) {
-
 	doc := `
       {
         __typename
@@ -497,8 +502,8 @@ func TestUnionIntersectionTypes_AllowsFragmentConditionsToBeAbstractTypes(t *tes
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestUnionIntersectionTypes_GetsExecutionInfoInResolver(t *testing.T) {
 
+func TestUnionIntersectionTypes_GetsExecutionInfoInResolver(t *testing.T) {
 	var encounteredContextValue string
 	var encounteredSchema graphql.Schema
 	var encounteredRootValue string
@@ -587,7 +592,7 @@ func TestUnionIntersectionTypes_GetsExecutionInfoInResolver(t *testing.T) {
 }
 
 func TestUnionIntersectionTypes_ValueMayBeNilPointer(t *testing.T) {
-	var unionInterfaceTestSchema, _ = graphql.NewSchema(graphql.SchemaConfig{
+	unionInterfaceTestSchema, _ := graphql.NewSchema(graphql.SchemaConfig{
 		Query: graphql.NewObject(graphql.ObjectConfig{
 			Name: "Query",
 			Fields: graphql.Fields{
@@ -629,7 +634,8 @@ func TestUnionIntersectionTypes_ValueMayBeNilPointer(t *testing.T) {
 			"query": map[string]interface{}{
 				"pet":   nil,
 				"named": nil,
-			}},
+			},
+		},
 	}
 	result := g(t, graphql.Params{
 		Schema:        unionInterfaceTestSchema,

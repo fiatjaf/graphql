@@ -18,12 +18,14 @@ type TypeDefinition interface {
 	GetLoc() *Location
 }
 
-var _ TypeDefinition = (*ScalarDefinition)(nil)
-var _ TypeDefinition = (*ObjectDefinition)(nil)
-var _ TypeDefinition = (*InterfaceDefinition)(nil)
-var _ TypeDefinition = (*UnionDefinition)(nil)
-var _ TypeDefinition = (*EnumDefinition)(nil)
-var _ TypeDefinition = (*InputObjectDefinition)(nil)
+var (
+	_ TypeDefinition = (*ScalarDefinition)(nil)
+	_ TypeDefinition = (*ObjectDefinition)(nil)
+	_ TypeDefinition = (*InterfaceDefinition)(nil)
+	_ TypeDefinition = (*UnionDefinition)(nil)
+	_ TypeDefinition = (*EnumDefinition)(nil)
+	_ TypeDefinition = (*InputObjectDefinition)(nil)
+)
 
 type TypeSystemDefinition interface {
 	GetOperation() string
@@ -33,10 +35,12 @@ type TypeSystemDefinition interface {
 	GetLoc() *Location
 }
 
-var _ TypeSystemDefinition = (*SchemaDefinition)(nil)
-var _ TypeSystemDefinition = (TypeDefinition)(nil)
-var _ TypeSystemDefinition = (*TypeExtensionDefinition)(nil)
-var _ TypeSystemDefinition = (*DirectiveDefinition)(nil)
+var (
+	_ TypeSystemDefinition = (*SchemaDefinition)(nil)
+	_ TypeSystemDefinition = (TypeDefinition)(nil)
+	_ TypeSystemDefinition = (*TypeExtensionDefinition)(nil)
+	_ TypeSystemDefinition = (*DirectiveDefinition)(nil)
+)
 
 // SchemaDefinition implements Node, Definition
 type SchemaDefinition struct {

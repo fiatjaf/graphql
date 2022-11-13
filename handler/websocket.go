@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -107,7 +106,6 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 
 			go func(message []byte) {
 				var msg GraphQLWSMessage
-				fmt.Println("MESSAGE:", string(message))
 				err := json.Unmarshal(message, &msg)
 				if err != nil {
 					ws.WriteJSON(GraphQLWSMessage{Type: "error"})
@@ -117,7 +115,7 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 				switch msg.Type {
 				case "connection_init":
 					ws.WriteJSON(GraphQLWSMessage{Type: "connection_ack"})
-				case "start", "subscribe":
+				case "start":
 					var payload GraphQLWSSubscriptionPayload
 					err := json.Unmarshal(msg.Payload, &payload)
 					if err != nil {
@@ -134,7 +132,6 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 					}
 					ch := graphql.DoAsync(params)
 					for result := range ch {
-						fmt.Println("RESULT:", result.Data)
 						b, _ := json.Marshal(result)
 						ws.WriteJSON(GraphQLWSMessage{
 							ID:      msg.ID,

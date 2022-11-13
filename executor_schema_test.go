@@ -63,7 +63,6 @@ func article(id interface{}) *testArticle {
 }
 
 func TestExecutesUsingAComplexSchema(t *testing.T) {
-
 	johnSmith = &testAuthor{
 		Id:   123,
 		Name: "John Smith",

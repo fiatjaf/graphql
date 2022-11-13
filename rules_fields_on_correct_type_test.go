@@ -16,6 +16,7 @@ func TestValidate_FieldsOnCorrectType_ObjectFieldSelection(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_FieldsOnCorrectType_AliasedObjectFieldSelection(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment aliasedObjectFieldSelection on Dog {
@@ -24,6 +25,7 @@ func TestValidate_FieldsOnCorrectType_AliasedObjectFieldSelection(t *testing.T) 
       }
     `)
 }
+
 func TestValidate_FieldsOnCorrectType_InterfaceFieldSelection(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment interfaceFieldSelection on Pet {
@@ -32,6 +34,7 @@ func TestValidate_FieldsOnCorrectType_InterfaceFieldSelection(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_FieldsOnCorrectType_AliasedInterfaceFieldSelection(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment interfaceFieldSelection on Pet {
@@ -39,6 +42,7 @@ func TestValidate_FieldsOnCorrectType_AliasedInterfaceFieldSelection(t *testing.
       }
     `)
 }
+
 func TestValidate_FieldsOnCorrectType_LyingAliasSelection(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment lyingAliasSelection on Dog {
@@ -46,6 +50,7 @@ func TestValidate_FieldsOnCorrectType_LyingAliasSelection(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_FieldsOnCorrectType_IgnoresFieldsOnUnknownType(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment unknownSelection on UnknownType {
@@ -53,6 +58,7 @@ func TestValidate_FieldsOnCorrectType_IgnoresFieldsOnUnknownType(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_FieldsOnCorrectType_ReportErrorsWhenTheTypeIsKnownAgain(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment typeKnownAgain on Pet {
@@ -67,6 +73,7 @@ func TestValidate_FieldsOnCorrectType_ReportErrorsWhenTheTypeIsKnownAgain(t *tes
 		testutil.RuleError(`Cannot query field "unknown_cat_field" on type "Cat".`, 5, 13),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_FieldNotDefinedOnFragment(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment fieldNotDefined on Dog {
@@ -76,6 +83,7 @@ func TestValidate_FieldsOnCorrectType_FieldNotDefinedOnFragment(t *testing.T) {
 		testutil.RuleError(`Cannot query field "meowVolume" on type "Dog". Did you mean "barkVolume"?`, 3, 9),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_IgnoreDeeplyUnknownField(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment deepFieldNotDefined on Dog {
@@ -87,6 +95,7 @@ func TestValidate_FieldsOnCorrectType_IgnoreDeeplyUnknownField(t *testing.T) {
 		testutil.RuleError(`Cannot query field "unknown_field" on type "Dog".`, 3, 9),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_SubFieldNotDefined(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment subFieldNotDefined on Human {
@@ -98,6 +107,7 @@ func TestValidate_FieldsOnCorrectType_SubFieldNotDefined(t *testing.T) {
 		testutil.RuleError(`Cannot query field "unknown_field" on type "Pet".`, 4, 11),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_FieldNotDefinedOnInlineFragment(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment fieldNotDefined on Pet {
@@ -109,6 +119,7 @@ func TestValidate_FieldsOnCorrectType_FieldNotDefinedOnInlineFragment(t *testing
 		testutil.RuleError(`Cannot query field "meowVolume" on type "Dog". Did you mean "barkVolume"?`, 4, 11),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_AliasedFieldTargetNotDefined(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment aliasedFieldTargetNotDefined on Dog {
@@ -118,6 +129,7 @@ func TestValidate_FieldsOnCorrectType_AliasedFieldTargetNotDefined(t *testing.T)
 		testutil.RuleError(`Cannot query field "mooVolume" on type "Dog". Did you mean "barkVolume"?`, 3, 9),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_AliasedLyingFieldTargetNotDefined(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment aliasedLyingFieldTargetNotDefined on Dog {
@@ -127,6 +139,7 @@ func TestValidate_FieldsOnCorrectType_AliasedLyingFieldTargetNotDefined(t *testi
 		testutil.RuleError(`Cannot query field "kawVolume" on type "Dog". Did you mean "barkVolume"?`, 3, 9),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_NotDefinedOnInterface(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment notDefinedOnInterface on Pet {
@@ -136,6 +149,7 @@ func TestValidate_FieldsOnCorrectType_NotDefinedOnInterface(t *testing.T) {
 		testutil.RuleError(`Cannot query field "tailLength" on type "Pet".`, 3, 9),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_DefinedOnImplementorsButNotOnInterface(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment definedOnImplementorsButNotInterface on Pet {
@@ -145,6 +159,7 @@ func TestValidate_FieldsOnCorrectType_DefinedOnImplementorsButNotOnInterface(t *
 		testutil.RuleError(`Cannot query field "nickname" on type "Pet". Did you mean to use an inline fragment on "Cat" or "Dog"?`, 3, 9),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_MetaFieldSelectionOnUnion(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment directFieldSelectionOnUnion on CatOrDog {
@@ -152,6 +167,7 @@ func TestValidate_FieldsOnCorrectType_MetaFieldSelectionOnUnion(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_FieldsOnCorrectType_DirectFieldSelectionOnUnion(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment directFieldSelectionOnUnion on CatOrDog {
@@ -161,6 +177,7 @@ func TestValidate_FieldsOnCorrectType_DirectFieldSelectionOnUnion(t *testing.T) 
 		testutil.RuleError(`Cannot query field "directField" on type "CatOrDog".`, 3, 9),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_DefinedImplementorsQueriedOnUnion(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment definedOnImplementorsQueriedOnUnion on CatOrDog {
@@ -170,6 +187,7 @@ func TestValidate_FieldsOnCorrectType_DefinedImplementorsQueriedOnUnion(t *testi
 		testutil.RuleError(`Cannot query field "name" on type "CatOrDog". Did you mean to use an inline fragment on "Being", "Pet", "Canine", "Cat", or "Dog"?`, 3, 9),
 	})
 }
+
 func TestValidate_FieldsOnCorrectType_ValidFieldInInlineFragment(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FieldsOnCorrectTypeRule, `
       fragment objectFieldSelection on Pet {
@@ -208,6 +226,7 @@ func TestValidate_FieldsOnCorrectTypeErrorMessage_WorksWithNoSmallNumbersOfField
 		t.Fatalf("Unexpected message, expected: %v, got %v", expected, message)
 	}
 }
+
 func TestValidate_FieldsOnCorrectTypeErrorMessage_OnlyShowsOneSetOfSuggestionsAtATimePreferringTypes(t *testing.T) {
 	message := graphql.UndefinedFieldMessage("f", "T", []string{"A", "B"}, []string{"z", "y"})
 	expected := `Cannot query field "f" on type "T". ` +

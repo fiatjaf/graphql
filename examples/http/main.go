@@ -97,7 +97,7 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
-//Helper function to import json from file to map
+// Helper function to import json from file to map
 func importJSONDataFromFile(fileName string, result interface{}) (isOK bool) {
 	isOK = true
 	content, err := ioutil.ReadFile(fileName)

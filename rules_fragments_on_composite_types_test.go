@@ -15,6 +15,7 @@ func TestValidate_FragmentsOnCompositeTypes_ObjectIsValidFragmentType(t *testing
       }
     `)
 }
+
 func TestValidate_FragmentsOnCompositeTypes_InterfaceIsValidFragmentType(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FragmentsOnCompositeTypesRule, `
       fragment validFragment on Pet {
@@ -22,6 +23,7 @@ func TestValidate_FragmentsOnCompositeTypes_InterfaceIsValidFragmentType(t *test
       }
     `)
 }
+
 func TestValidate_FragmentsOnCompositeTypes_ObjectIsValidInlineFragmentType(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FragmentsOnCompositeTypesRule, `
       fragment validFragment on Pet {
@@ -31,6 +33,7 @@ func TestValidate_FragmentsOnCompositeTypes_ObjectIsValidInlineFragmentType(t *t
       }
     `)
 }
+
 func TestValidate_FragmentsOnCompositeTypes_InlineFragmentWithoutTypeIsValid(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FragmentsOnCompositeTypesRule, `
       fragment validFragment on Pet {
@@ -40,6 +43,7 @@ func TestValidate_FragmentsOnCompositeTypes_InlineFragmentWithoutTypeIsValid(t *
       }
     `)
 }
+
 func TestValidate_FragmentsOnCompositeTypes_UnionIsValidFragmentType(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.FragmentsOnCompositeTypesRule, `
       fragment validFragment on CatOrDog {
@@ -47,6 +51,7 @@ func TestValidate_FragmentsOnCompositeTypes_UnionIsValidFragmentType(t *testing.
       }
     `)
 }
+
 func TestValidate_FragmentsOnCompositeTypes_ScalarIsInvalidFragmentType(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FragmentsOnCompositeTypesRule, `
       fragment scalarFragment on Boolean {
@@ -56,6 +61,7 @@ func TestValidate_FragmentsOnCompositeTypes_ScalarIsInvalidFragmentType(t *testi
 		testutil.RuleError(`Fragment "scalarFragment" cannot condition on non composite type "Boolean".`, 2, 34),
 	})
 }
+
 func TestValidate_FragmentsOnCompositeTypes_EnumIsInvalidFragmentType(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FragmentsOnCompositeTypesRule, `
       fragment scalarFragment on FurColor {
@@ -65,6 +71,7 @@ func TestValidate_FragmentsOnCompositeTypes_EnumIsInvalidFragmentType(t *testing
 		testutil.RuleError(`Fragment "scalarFragment" cannot condition on non composite type "FurColor".`, 2, 34),
 	})
 }
+
 func TestValidate_FragmentsOnCompositeTypes_InputObjectIsInvalidFragmentType(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FragmentsOnCompositeTypesRule, `
       fragment inputFragment on ComplexInput {
@@ -74,6 +81,7 @@ func TestValidate_FragmentsOnCompositeTypes_InputObjectIsInvalidFragmentType(t *
 		testutil.RuleError(`Fragment "inputFragment" cannot condition on non composite type "ComplexInput".`, 2, 33),
 	})
 }
+
 func TestValidate_FragmentsOnCompositeTypes_ScalarIsInvalidInlineFragmentType(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.FragmentsOnCompositeTypesRule, `
       fragment invalidFragment on Pet {

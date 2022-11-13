@@ -454,9 +454,7 @@ func parseArgument(parser *Parser) (interface{}, error) {
  * InlineFragment : ... TypeCondition? Directives? SelectionSet
  */
 func parseFragment(parser *Parser) (interface{}, error) {
-	var (
-		err error
-	)
+	var err error
 	start := parser.Token.Start
 	if _, err = expect(parser, lexer.SPREAD); err != nil {
 		return nil, err
@@ -1553,7 +1551,7 @@ func expectKeyWord(parser *Parser, value string) (lexer.Token, error) {
 // Helper function for creating an error when an unexpected lexed token
 // is encountered.
 func unexpected(parser *Parser, atToken lexer.Token) error {
-	var token = atToken
+	token := atToken
 	if (atToken == lexer.Token{}) {
 		token = parser.Token
 	}

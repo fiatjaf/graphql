@@ -145,10 +145,9 @@ func NewSchema(config SchemaConfig) (Schema, error) {
 	return schema, nil
 }
 
-//Added Check implementation of interfaces at runtime..
-//Add Implementations at Runtime..
+// Added Check implementation of interfaces at runtime..
+// Add Implementations at Runtime..
 func (gq *Schema) AddImplementation() error {
-
 	// Keep track of all implementations by interface name.
 	if gq.implementations == nil {
 		gq.implementations = map[string][]*Object{}
@@ -181,8 +180,8 @@ func (gq *Schema) AddImplementation() error {
 	return nil
 }
 
-//Edited. To check add Types at RunTime..
-//Append Runtime schema to typeMap
+// Edited. To check add Types at RunTime..
+// Append Runtime schema to typeMap
 func (gq *Schema) AppendType(objectType Type) error {
 	if objectType.Error() != nil {
 		return objectType.Error()
@@ -192,7 +191,7 @@ func (gq *Schema) AppendType(objectType Type) error {
 	if err != nil {
 		return err
 	}
-	//Now Add interface implementation..
+	// Now Add interface implementation..
 	return gq.AddImplementation()
 }
 
@@ -240,6 +239,7 @@ func (gq *Schema) PossibleTypes(abstractType Abstract) []*Object {
 	}
 	return []*Object{}
 }
+
 func (gq *Schema) IsPossibleType(abstractType Abstract, possibleType *Object) bool {
 	possibleTypeMap := gq.possibleTypeMap
 	if possibleTypeMap == nil {
@@ -392,7 +392,6 @@ func assertObjectImplementsInterface(schema *Schema, object *Object, iface *Inte
 			objectField != nil,
 			`"%v" expects field "%v" but "%v" does not `+
 				`provide it.`, iface, fieldName, object)
-
 		if err != nil {
 			return err
 		}

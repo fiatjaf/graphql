@@ -18,6 +18,7 @@ func TestValidate_VariablesInAllowedPosition_BooleanToBoolean(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_BooleanToBooleanWithinFragment(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       fragment booleanArgFrag on ComplicatedArgs {
@@ -42,6 +43,7 @@ func TestValidate_VariablesInAllowedPosition_BooleanToBooleanWithinFragment(t *t
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToBoolean(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($nonNullBooleanArg: Boolean!)
@@ -52,6 +54,7 @@ func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToBoolean(t *test
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToBooleanWithinFragment(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       fragment booleanArgFrag on ComplicatedArgs {
@@ -66,6 +69,7 @@ func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToBooleanWithinFr
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_IntToNonNullableIntWithDefault(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($intArg: Int = 1)
@@ -76,6 +80,7 @@ func TestValidate_VariablesInAllowedPosition_IntToNonNullableIntWithDefault(t *t
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_ListOfStringToListOfString(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($stringListVar: [String])
@@ -86,6 +91,7 @@ func TestValidate_VariablesInAllowedPosition_ListOfStringToListOfString(t *testi
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_ListOfNonNullableStringToListOfString(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($stringListVar: [String!])
@@ -96,6 +102,7 @@ func TestValidate_VariablesInAllowedPosition_ListOfNonNullableStringToListOfStri
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_StringToListOfStringInItemPosition(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($stringVar: String)
@@ -106,6 +113,7 @@ func TestValidate_VariablesInAllowedPosition_StringToListOfStringInItemPosition(
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_NonNullableStringToListOfStringInItemPosition(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($stringVar: String!)
@@ -116,6 +124,7 @@ func TestValidate_VariablesInAllowedPosition_NonNullableStringToListOfStringInIt
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_ComplexInputToComplexInput(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($complexVar: ComplexInput)
@@ -126,6 +135,7 @@ func TestValidate_VariablesInAllowedPosition_ComplexInputToComplexInput(t *testi
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_ComplexInputToComplexInputInFieldPosition(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($boolVar: Boolean = false)
@@ -136,6 +146,7 @@ func TestValidate_VariablesInAllowedPosition_ComplexInputToComplexInputInFieldPo
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToNonNullableBooleanInDirective(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($boolVar: Boolean!)
@@ -144,6 +155,7 @@ func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToNonNullableBool
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToNonNullableBooleanInDirectiveInDirectiveWithDefault(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($boolVar: Boolean = false)
@@ -152,6 +164,7 @@ func TestValidate_VariablesInAllowedPosition_NonNullableBooleanToNonNullableBool
       }
     `)
 }
+
 func TestValidate_VariablesInAllowedPosition_IntToNonNullableInt(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($intArg: Int) {
@@ -164,6 +177,7 @@ func TestValidate_VariablesInAllowedPosition_IntToNonNullableInt(t *testing.T) {
 			`expecting type "Int!".`, 2, 19, 4, 45),
 	})
 }
+
 func TestValidate_VariablesInAllowedPosition_IntToNonNullableIntWithinFragment(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.VariablesInAllowedPositionRule, `
       fragment nonNullIntArgFieldFrag on ComplicatedArgs {
@@ -180,6 +194,7 @@ func TestValidate_VariablesInAllowedPosition_IntToNonNullableIntWithinFragment(t
 			`expecting type "Int!".`, 6, 19, 3, 43),
 	})
 }
+
 func TestValidate_VariablesInAllowedPosition_IntToNonNullableIntWithinNestedFragment(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.VariablesInAllowedPositionRule, `
       fragment outerFrag on ComplicatedArgs {
@@ -200,6 +215,7 @@ func TestValidate_VariablesInAllowedPosition_IntToNonNullableIntWithinNestedFrag
 			`expecting type "Int!".`, 10, 19, 7, 43),
 	})
 }
+
 func TestValidate_VariablesInAllowedPosition_StringOverBoolean(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($stringVar: String) {
@@ -212,6 +228,7 @@ func TestValidate_VariablesInAllowedPosition_StringOverBoolean(t *testing.T) {
 			`expecting type "Boolean".`, 2, 19, 4, 39),
 	})
 }
+
 func TestValidate_VariablesInAllowedPosition_StringToListOfString(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($stringVar: String) {
@@ -224,6 +241,7 @@ func TestValidate_VariablesInAllowedPosition_StringToListOfString(t *testing.T) 
 			`expecting type "[String]".`, 2, 19, 4, 45),
 	})
 }
+
 func TestValidate_VariablesInAllowedPosition_BooleanToNonNullableBooleanInDirective(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($boolVar: Boolean) {
@@ -234,6 +252,7 @@ func TestValidate_VariablesInAllowedPosition_BooleanToNonNullableBooleanInDirect
 			`expecting type "Boolean!".`, 2, 19, 3, 26),
 	})
 }
+
 func TestValidate_VariablesInAllowedPosition_StringToNonNullableBooleanInDirective(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.VariablesInAllowedPositionRule, `
       query Query($stringVar: String) {

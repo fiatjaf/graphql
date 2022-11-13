@@ -63,7 +63,6 @@ func TestPrinter_PrintsMinimalAST(t *testing.T) {
 // Skipped, can't figure out how to pass in an invalid astDoc, which is already strongly-typed
 
 func TestPrinter_CorrectlyPrintsNonQueryOperationsWithoutName(t *testing.T) {
-
 	// Test #1
 	queryAstShorthanded := `query { id, name }`
 	expected := `{

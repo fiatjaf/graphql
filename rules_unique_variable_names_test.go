@@ -14,6 +14,7 @@ func TestValidate_UniqueVariableNames_UniqueVariableNames(t *testing.T) {
       query B($x: String, $y: Int) { __typename }
     `)
 }
+
 func TestValidate_UniqueVariableNames_DuplicateVariableNames(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueVariableNamesRule, `
       query A($x: Int, $x: Int, $x: String) { __typename }

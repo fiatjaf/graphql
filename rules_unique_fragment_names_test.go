@@ -15,6 +15,7 @@ func TestValidate_UniqueFragmentNames_NoFragments(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueFragmentNames_OneFragment(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueFragmentNamesRule, `
       {
@@ -26,6 +27,7 @@ func TestValidate_UniqueFragmentNames_OneFragment(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueFragmentNames_ManyFragments(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueFragmentNamesRule, `
       {
@@ -44,6 +46,7 @@ func TestValidate_UniqueFragmentNames_ManyFragments(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueFragmentNames_InlineFragmentsAreAlwaysUnique(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueFragmentNamesRule, `
       {
@@ -56,6 +59,7 @@ func TestValidate_UniqueFragmentNames_InlineFragmentsAreAlwaysUnique(t *testing.
       }
     `)
 }
+
 func TestValidate_UniqueFragmentNames_FragmentAndOperationNamedTheSame(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueFragmentNamesRule, `
       query Foo {
@@ -66,6 +70,7 @@ func TestValidate_UniqueFragmentNames_FragmentAndOperationNamedTheSame(t *testin
       }
     `)
 }
+
 func TestValidate_UniqueFragmentNames_FragmentsNamedTheSame(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueFragmentNamesRule, `
       {
@@ -81,6 +86,7 @@ func TestValidate_UniqueFragmentNames_FragmentsNamedTheSame(t *testing.T) {
 		testutil.RuleError(`There can only be one fragment named "fragA".`, 5, 16, 8, 16),
 	})
 }
+
 func TestValidate_UniqueFragmentNames_FragmentsNamedTheSameWithoutBeingReferenced(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueFragmentNamesRule, `
       fragment fragA on Type {

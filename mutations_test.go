@@ -23,16 +23,20 @@ func newTestRoot(originalNumber int) *testRoot {
 		NumberHolder: &testNumberHolder{originalNumber},
 	}
 }
+
 func (r *testRoot) ImmediatelyChangeTheNumber(newNumber int) *testNumberHolder {
 	r.NumberHolder.TheNumber = newNumber
 	return r.NumberHolder
 }
+
 func (r *testRoot) PromiseToChangeTheNumber(newNumber int) *testNumberHolder {
 	return r.ImmediatelyChangeTheNumber(newNumber)
 }
+
 func (r *testRoot) FailToChangeTheNumber(newNumber int) *testNumberHolder {
 	panic("Cannot change the number")
 }
+
 func (r *testRoot) PromiseAndFailToChangeTheNumber(newNumber int) *testNumberHolder {
 	panic("Cannot change the number")
 }
@@ -120,7 +124,6 @@ var mutationsTestSchema, _ = graphql.NewSchema(graphql.SchemaConfig{
 })
 
 func TestMutations_ExecutionOrdering_EvaluatesMutationsSerially(t *testing.T) {
-
 	root := newTestRoot(6)
 	doc := `mutation M {
       first: immediatelyChangeTheNumber(newNumber: 1) {
@@ -176,8 +179,8 @@ func TestMutations_ExecutionOrdering_EvaluatesMutationsSerially(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestMutations_EvaluatesMutationsCorrectlyInThePresenceOfAFailedMutation(t *testing.T) {
 
+func TestMutations_EvaluatesMutationsCorrectlyInThePresenceOfAFailedMutation(t *testing.T) {
 	root := newTestRoot(6)
 	doc := `mutation M {
       first: immediatelyChangeTheNumber(newNumber: 1) {

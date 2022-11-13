@@ -834,7 +834,6 @@ func TestIntrospection_ExecutesAnIntrospectionQuery(t *testing.T) {
 }
 
 func TestIntrospection_ExecutesAnInputObject(t *testing.T) {
-
 	testInputObject := graphql.NewInputObject(graphql.InputObjectConfig{
 		Name: "TestInputObject",
 		Fields: graphql.InputObjectConfigFieldMap{
@@ -946,7 +945,6 @@ func TestIntrospection_ExecutesAnInputObject(t *testing.T) {
 }
 
 func TestIntrospection_SupportsThe__TypeRootField(t *testing.T) {
-
 	testType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "TestType",
 		Fields: graphql.Fields{
@@ -983,8 +981,8 @@ func TestIntrospection_SupportsThe__TypeRootField(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestIntrospection_IdentifiesDeprecatedFields(t *testing.T) {
 
+func TestIntrospection_IdentifiesDeprecatedFields(t *testing.T) {
 	testType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "TestType",
 		Fields: graphql.Fields{
@@ -1042,8 +1040,8 @@ func TestIntrospection_IdentifiesDeprecatedFields(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestIntrospection_RespectsTheIncludeDeprecatedParameterForFields(t *testing.T) {
 
+func TestIntrospection_RespectsTheIncludeDeprecatedParameterForFields(t *testing.T) {
 	testType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "TestType",
 		Fields: graphql.Fields{
@@ -1111,8 +1109,8 @@ func TestIntrospection_RespectsTheIncludeDeprecatedParameterForFields(t *testing
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestIntrospection_IdentifiesDeprecatedEnumValues(t *testing.T) {
 
+func TestIntrospection_IdentifiesDeprecatedEnumValues(t *testing.T) {
 	testEnum := graphql.NewEnum(graphql.EnumConfig{
 		Name: "TestEnum",
 		Values: graphql.EnumValueConfigMap{
@@ -1186,8 +1184,8 @@ func TestIntrospection_IdentifiesDeprecatedEnumValues(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestIntrospection_RespectsTheIncludeDeprecatedParameterForEnumValues(t *testing.T) {
 
+func TestIntrospection_RespectsTheIncludeDeprecatedParameterForEnumValues(t *testing.T) {
 	testEnum := graphql.NewEnum(graphql.EnumConfig{
 		Name: "TestEnum",
 		Values: graphql.EnumValueConfigMap{
@@ -1275,8 +1273,8 @@ func TestIntrospection_RespectsTheIncludeDeprecatedParameterForEnumValues(t *tes
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestIntrospection_FailsAsExpectedOnThe__TypeRootFieldWithoutAnArg(t *testing.T) {
 
+func TestIntrospection_FailsAsExpectedOnThe__TypeRootFieldWithoutAnArg(t *testing.T) {
 	testType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "TestType",
 		Fields: graphql.Fields{
@@ -1319,7 +1317,6 @@ func TestIntrospection_FailsAsExpectedOnThe__TypeRootFieldWithoutAnArg(t *testin
 }
 
 func TestIntrospection_ExposesDescriptionsOnTypesAndFields(t *testing.T) {
-
 	queryRoot := graphql.NewObject(graphql.ObjectConfig{
 		Name: "QueryRoot",
 		Fields: graphql.Fields{
@@ -1390,8 +1387,8 @@ func TestIntrospection_ExposesDescriptionsOnTypesAndFields(t *testing.T) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestIntrospection_ExposesDescriptionsOnEnums(t *testing.T) {
 
+func TestIntrospection_ExposesDescriptionsOnEnums(t *testing.T) {
 	queryRoot := graphql.NewObject(graphql.ObjectConfig{
 		Name: "QueryRoot",
 		Fields: graphql.Fields{

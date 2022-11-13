@@ -25,7 +25,6 @@ type SubscribeParams struct {
 // To finish a subscription you can simply close the channel from inside the `Subscribe` function
 // currently does not support extensions hooks
 func Subscribe(p Params) chan *Result {
-
 	source := source.NewSource(&source.Source{
 		Body: []byte(p.RequestString),
 		Name: "GraphQL request",
@@ -36,7 +35,6 @@ func Subscribe(p Params) chan *Result {
 	// parse the source
 	AST, err := parser.Parse(parser.ParseParams{Source: source})
 	if err != nil {
-
 		// merge the errors from extensions and the original error from parser
 		return sendOneResultAndClose(&Result{
 			Errors: gqlerrors.FormatErrors(err),
@@ -51,7 +49,6 @@ func Subscribe(p Params) chan *Result {
 		return sendOneResultAndClose(&Result{
 			Errors: validationResult.Errors,
 		})
-
 	}
 	return ExecuteSubscription(ExecuteParams{
 		Schema:        p.Schema,
@@ -73,22 +70,11 @@ func sendOneResultAndClose(res *Result) chan *Result {
 // ExecuteSubscription is similar to graphql.Execute but returns a channel instead of a Result
 // currently does not support extensions
 func ExecuteSubscription(p ExecuteParams) chan *Result {
-
 	if p.Context == nil {
 		p.Context = context.Background()
 	}
 
-	var mapSourceToResponse = func(payload interface{}) *Result {
-		return Execute(ExecuteParams{
-			Schema:        p.Schema,
-			Root:          payload,
-			AST:           p.AST,
-			OperationName: p.OperationName,
-			Args:          p.Args,
-			Context:       p.Context,
-		})
-	}
-	var resultChannel = make(chan *Result)
+	resultChannel := make(chan *Result)
 	go func() {
 		defer close(resultChannel)
 		defer func() {
@@ -112,7 +98,6 @@ func ExecuteSubscription(p ExecuteParams) chan *Result {
 			Args:          p.Args,
 			Context:       p.Context,
 		})
-
 		if err != nil {
 			resultChannel <- &Result{
 				Errors: gqlerrors.FormatErrors(err),
@@ -202,24 +187,24 @@ func ExecuteSubscription(p ExecuteParams) chan *Result {
 			return
 		}
 
-		switch fieldResult.(type) {
-		case chan interface{}:
-			sub := fieldResult.(chan interface{})
-			for {
-				select {
-				case <-p.Context.Done():
-					return
+		for {
+			select {
+			case <-p.Context.Done():
+				return
 
-				case res, more := <-sub:
-					if !more {
-						return
-					}
-					resultChannel <- mapSourceToResponse(res)
+			case res, more := <-fieldResult:
+				if !more {
+					return
 				}
+				resultChannel <- Execute(ExecuteParams{
+					Schema:        p.Schema,
+					Root:          res,
+					AST:           p.AST,
+					OperationName: p.OperationName,
+					Args:          p.Args,
+					Context:       p.Context,
+				})
 			}
-		default:
-			resultChannel <- mapSourceToResponse(fieldResult)
-			return
 		}
 	}()
 

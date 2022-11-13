@@ -25,7 +25,6 @@ type testHuman struct {
 }
 
 func TestIsTypeOfUsedToResolveRuntimeTypeForInterface(t *testing.T) {
-
 	petType := graphql.NewInterface(graphql.InterfaceConfig{
 		Name: "Pet",
 		Fields: graphql.Fields{
@@ -159,7 +158,6 @@ func TestIsTypeOfUsedToResolveRuntimeTypeForInterface(t *testing.T) {
 }
 
 func TestAppendTypeUsedToAddRuntimeCustomScalarTypeForInterface(t *testing.T) {
-
 	petType := graphql.NewInterface(graphql.InterfaceConfig{
 		Name: "Pet",
 		Fields: graphql.Fields{
@@ -251,7 +249,7 @@ func TestAppendTypeUsedToAddRuntimeCustomScalarTypeForInterface(t *testing.T) {
 		t.Fatalf("Error in schema %v", err.Error())
 	}
 
-	//Now add types catType and dogType at runtime.
+	// Now add types catType and dogType at runtime.
 	schema.AppendType(catType)
 	schema.AppendType(dogType)
 
@@ -296,7 +294,6 @@ func TestAppendTypeUsedToAddRuntimeCustomScalarTypeForInterface(t *testing.T) {
 }
 
 func TestIsTypeOfUsedToResolveRuntimeTypeForUnion(t *testing.T) {
-
 	dogType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Dog",
 		IsTypeOf: func(p graphql.IsTypeOfParams) bool {
@@ -396,7 +393,6 @@ func TestIsTypeOfUsedToResolveRuntimeTypeForUnion(t *testing.T) {
 }
 
 func TestResolveTypeOnInterfaceYieldsUsefulError(t *testing.T) {
-
 	var dogType *graphql.Object
 	var catType *graphql.Object
 	var humanType *graphql.Object
@@ -532,7 +528,6 @@ func TestResolveTypeOnInterfaceYieldsUsefulError(t *testing.T) {
 }
 
 func TestResolveTypeOnUnionYieldsUsefulError(t *testing.T) {
-
 	humanType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Human",
 		Fields: graphql.Fields{

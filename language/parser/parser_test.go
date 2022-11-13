@@ -132,7 +132,6 @@ fragment MissingOn Type
 		_, err := Parse(ParseParams{Source: test.source})
 		checkErrorMessage(t, err, test.expectedMessage)
 	}
-
 }
 
 func TestParseProvidesUsefulErrorsWhenUsingSource(t *testing.T) {
@@ -193,7 +192,6 @@ func TestDoesNotAllowNullAsValue(t *testing.T) {
 }
 
 func TestParsesMultiByteCharacters_Unicode(t *testing.T) {
-
 	doc := `
         # This comment has a \u0A0A multi-byte character.
         { field(arg: "Has a \u0A0A multi-byte character.") }
@@ -237,7 +235,6 @@ func TestParsesMultiByteCharacters_Unicode(t *testing.T) {
 										End:   116,
 									}),
 									Name: ast.NewName(&ast.Name{
-
 										Loc: ast.NewLocation(&ast.Location{
 											Start: 75,
 											End:   78,
@@ -245,7 +242,6 @@ func TestParsesMultiByteCharacters_Unicode(t *testing.T) {
 										Value: "arg",
 									}),
 									Value: ast.NewStringValue(&ast.StringValue{
-
 										Loc: ast.NewLocation(&ast.Location{
 											Start: 80,
 											End:   116,
@@ -270,7 +266,6 @@ func TestParsesMultiByteCharacters_Unicode(t *testing.T) {
 }
 
 func TestParsesMultiByteCharacters_UnicodeText(t *testing.T) {
-
 	doc := `
         # This comment has a фы世界 multi-byte character.
         { field(arg: "Has a фы世界 multi-byte character.") }
@@ -314,7 +309,6 @@ func TestParsesMultiByteCharacters_UnicodeText(t *testing.T) {
 										End:   116,
 									}),
 									Name: ast.NewName(&ast.Name{
-
 										Loc: ast.NewLocation(&ast.Location{
 											Start: 75,
 											End:   78,
@@ -322,7 +316,6 @@ func TestParsesMultiByteCharacters_UnicodeText(t *testing.T) {
 										Value: "arg",
 									}),
 									Value: ast.NewStringValue(&ast.StringValue{
-
 										Loc: ast.NewLocation(&ast.Location{
 											Start: 80,
 											End:   116,
@@ -733,7 +726,6 @@ func TestParseCreatesAst(t *testing.T) {
 	if !reflect.DeepEqual(document, expectedDocument) {
 		t.Fatalf("unexpected document, expected: %v, got: %v", expectedDocument, document.Definitions)
 	}
-
 }
 
 type errorMessageTest struct {

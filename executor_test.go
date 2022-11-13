@@ -16,7 +16,6 @@ import (
 )
 
 func TestExecutesArbitraryCode(t *testing.T) {
-
 	deepData := map[string]interface{}{}
 	data := map[string]interface{}{
 		"a": func() interface{} { return "Apple" },
@@ -211,7 +210,6 @@ func TestExecutesArbitraryCode(t *testing.T) {
 }
 
 func TestMergesParallelFragments(t *testing.T) {
-
 	query := `
       { a, ...FragOne, ...FragTwo }
 
@@ -354,7 +352,6 @@ func TestCustomMapType(t *testing.T) {
 }
 
 func TestThreadsSourceCorrectly(t *testing.T) {
-
 	query := `
       query Example { a }
     `
@@ -404,7 +401,6 @@ func TestThreadsSourceCorrectly(t *testing.T) {
 }
 
 func TestCorrectlyThreadsArguments(t *testing.T) {
-
 	query := `
       query Example {
         b(numArg: 123, stringArg: "foo")
@@ -463,7 +459,6 @@ func TestCorrectlyThreadsArguments(t *testing.T) {
 }
 
 func TestThreadsRootValueContextCorrectly(t *testing.T) {
-
 	query := `
       query Example { a }
     `
@@ -513,7 +508,6 @@ func TestThreadsRootValueContextCorrectly(t *testing.T) {
 }
 
 func TestThreadsContextCorrectly(t *testing.T) {
-
 	query := `
       query Example { a }
     `
@@ -560,7 +554,6 @@ func TestThreadsContextCorrectly(t *testing.T) {
 }
 
 func TestNullsOutErrorSubtrees(t *testing.T) {
-
 	// TODO: TestNullsOutErrorSubtrees test for go-routines if implemented
 	query := `{
       sync,
@@ -571,17 +564,18 @@ func TestNullsOutErrorSubtrees(t *testing.T) {
 		"sync":      "sync",
 		"syncError": nil,
 	}
-	expectedErrors := []gqlerrors.FormattedError{{
-		Message: "Error getting syncError",
-		Locations: []location.SourceLocation{
-			{
-				Line: 3, Column: 7,
+	expectedErrors := []gqlerrors.FormattedError{
+		{
+			Message: "Error getting syncError",
+			Locations: []location.SourceLocation{
+				{
+					Line: 3, Column: 7,
+				},
+			},
+			Path: []interface{}{
+				"syncError",
 			},
 		},
-		Path: []interface{}{
-			"syncError",
-		},
-	},
 	}
 
 	data := map[string]interface{}{
@@ -628,7 +622,6 @@ func TestNullsOutErrorSubtrees(t *testing.T) {
 }
 
 func TestUsesTheInlineOperationIfNoOperationNameIsProvided(t *testing.T) {
-
 	doc := `{ a }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -673,7 +666,6 @@ func TestUsesTheInlineOperationIfNoOperationNameIsProvided(t *testing.T) {
 }
 
 func TestUsesTheOnlyOperationIfNoOperationNameIsProvided(t *testing.T) {
-
 	doc := `query Example { a }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -718,7 +710,6 @@ func TestUsesTheOnlyOperationIfNoOperationNameIsProvided(t *testing.T) {
 }
 
 func TestUsesTheNamedOperationIfOperationNameIsProvided(t *testing.T) {
-
 	doc := `query Example { first: a } query OtherExample { second: a }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -763,7 +754,6 @@ func TestUsesTheNamedOperationIfOperationNameIsProvided(t *testing.T) {
 }
 
 func TestThrowsIfNoOperationIsProvided(t *testing.T) {
-
 	doc := `fragment Example on Type { a }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -807,8 +797,8 @@ func TestThrowsIfNoOperationIsProvided(t *testing.T) {
 		t.Fatalf("unexpected result, Diff: %v", testutil.Diff(expectedErrors, result.Errors))
 	}
 }
-func TestThrowsIfNoOperationNameIsProvidedWithMultipleOperations(t *testing.T) {
 
+func TestThrowsIfNoOperationNameIsProvidedWithMultipleOperations(t *testing.T) {
 	doc := `query Example { a } query OtherExample { a }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -854,7 +844,6 @@ func TestThrowsIfNoOperationNameIsProvidedWithMultipleOperations(t *testing.T) {
 }
 
 func TestThrowsIfUnknownOperationNameIsProvided(t *testing.T) {
-
 	doc := `query Example { a } query OtherExample { a }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -950,8 +939,8 @@ func TestThrowsIfOperationTypeIsUnsupported(t *testing.T) {
 		}
 	}
 }
-func TestUsesTheQuerySchemaForQueries(t *testing.T) {
 
+func TestUsesTheQuerySchemaForQueries(t *testing.T) {
 	doc := `query Q { a } mutation M { c } subscription S { a }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -1014,7 +1003,6 @@ func TestUsesTheQuerySchemaForQueries(t *testing.T) {
 }
 
 func TestUsesTheMutationSchemaForMutations(t *testing.T) {
-
 	doc := `query Q { a } mutation M { c }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -1069,7 +1057,6 @@ func TestUsesTheMutationSchemaForMutations(t *testing.T) {
 }
 
 func TestUsesTheSubscriptionSchemaForSubscriptions(t *testing.T) {
-
 	doc := `query Q { a } subscription S { a }`
 	data := map[string]interface{}{
 		"a": "b",
@@ -1124,7 +1111,6 @@ func TestUsesTheSubscriptionSchemaForSubscriptions(t *testing.T) {
 }
 
 func TestCorrectFieldOrderingDespiteExecutionOrder(t *testing.T) {
-
 	doc := `
 	{
       b,
@@ -1207,7 +1193,6 @@ func TestCorrectFieldOrderingDespiteExecutionOrder(t *testing.T) {
 }
 
 func TestAvoidsRecursion(t *testing.T) {
-
 	doc := `
       query Q {
         a
@@ -1261,11 +1246,9 @@ func TestAvoidsRecursion(t *testing.T) {
 	if !reflect.DeepEqual(expected, result) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
-
 }
 
 func TestDoesNotIncludeIllegalFieldsInOutput(t *testing.T) {
-
 	doc := `mutation M {
       thisIsIllegalDontIncludeMe
     }`
@@ -1314,7 +1297,6 @@ func TestDoesNotIncludeIllegalFieldsInOutput(t *testing.T) {
 }
 
 func TestDoesNotIncludeArgumentsThatWereNotSet(t *testing.T) {
-
 	doc := `{ field(a: true, c: false, e: 0) }`
 
 	expected := &graphql.Result{
@@ -1383,7 +1365,6 @@ type testNotSpecialType struct {
 }
 
 func TestFailsWhenAnIsTypeOfCheckIsNotMet(t *testing.T) {
-
 	query := `{ specials { value } }`
 
 	data := map[string]interface{}{
@@ -1402,19 +1383,20 @@ func TestFailsWhenAnIsTypeOfCheckIsNotMet(t *testing.T) {
 				nil,
 			},
 		},
-		Errors: []gqlerrors.FormattedError{{
-			Message: `Expected value of type "SpecialType" but got: graphql_test.testNotSpecialType.`,
-			Locations: []location.SourceLocation{
-				{
-					Line:   1,
-					Column: 3,
+		Errors: []gqlerrors.FormattedError{
+			{
+				Message: `Expected value of type "SpecialType" but got: graphql_test.testNotSpecialType.`,
+				Locations: []location.SourceLocation{
+					{
+						Line:   1,
+						Column: 3,
+					},
+				},
+				Path: []interface{}{
+					"specials",
+					1,
 				},
 			},
-			Path: []interface{}{
-				"specials",
-				1,
-			},
-		},
 		},
 	}
 
@@ -1468,7 +1450,6 @@ func TestFailsWhenAnIsTypeOfCheckIsNotMet(t *testing.T) {
 }
 
 func TestFailsToExecuteQueryContainingATypeDefinition(t *testing.T) {
-
 	query := `
       { foo }
 
@@ -1753,7 +1734,7 @@ func TestGraphqlTag(t *testing.T) {
 			"fooBar": &graphql.Field{Type: graphql.String},
 		},
 	})
-	var baz = &graphql.Field{
+	baz := &graphql.Field{
 		Type:        typeObjectType,
 		Description: "typeObjectType",
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
@@ -1800,14 +1781,14 @@ func TestFieldResolver(t *testing.T) {
 			"fooBar": &graphql.Field{Type: graphql.String},
 		},
 	})
-	var baz = &graphql.Field{
+	baz := &graphql.Field{
 		Type:        typeObjectType,
 		Description: "typeObjectType",
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 			return testCustomResolver{}, nil
 		},
 	}
-	var bazPtr = &graphql.Field{
+	bazPtr := &graphql.Field{
 		Type:        typeObjectType,
 		Description: "typeObjectType",
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
@@ -1868,7 +1849,7 @@ func TestContextDeadline(t *testing.T) {
 	}
 
 	// Query type includes a field that won't resolve within the deadline
-	var queryType = graphql.NewObject(
+	queryType := graphql.NewObject(
 		graphql.ObjectConfig{
 			Name: "Query",
 			Fields: graphql.Fields{
@@ -1998,7 +1979,7 @@ func TestThunkResultsProcessedCorrectly(t *testing.T) {
 }
 
 func TestThunkErrorsAreHandledCorrectly(t *testing.T) {
-	var bazCError = errors.New("barC error")
+	bazCError := errors.New("barC error")
 	barType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Bar",
 		Fields: graphql.Fields{
@@ -2058,7 +2039,6 @@ func TestThunkErrorsAreHandledCorrectly(t *testing.T) {
 	schema, err := graphql.NewSchema(graphql.SchemaConfig{
 		Query: queryType,
 	})
-
 	if err != nil {
 		t.Fatalf("unexpected error, got: %v", err)
 	}
@@ -2084,7 +2064,7 @@ func TestThunkErrorsAreHandledCorrectly(t *testing.T) {
 		if got := bar["bazC"]; got != nil {
 			t.Errorf("foo.bar.bazC: got=%v, want=nil", got)
 		}
-		var errs = result.Errors
+		errs := result.Errors
 		if len(errs) != 1 {
 			t.Fatalf("expected 1 error, got %v", result.Errors)
 		}

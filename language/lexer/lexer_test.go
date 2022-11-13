@@ -60,7 +60,6 @@ func TestLexer_GetTokenDesc(t *testing.T) {
 	if expected != tokenDescription {
 		t.Errorf("Expected %v, got %v", expected, tokenDescription)
 	}
-
 }
 
 func TestLexer_DisallowsUncommonControlCharacters(t *testing.T) {

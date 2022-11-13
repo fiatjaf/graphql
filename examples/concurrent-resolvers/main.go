@@ -39,7 +39,7 @@ var QueryType = graphql.NewObject(graphql.ObjectConfig{
 		"concurrentFieldFoo": &graphql.Field{
 			Type: FieldFooType,
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-				var foo = Foo{Name: "Foo's name"}
+				foo := Foo{Name: "Foo's name"}
 				return func() (interface{}, error) {
 					return &foo, nil
 				}, nil

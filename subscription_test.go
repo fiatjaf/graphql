@@ -10,7 +10,6 @@ import (
 )
 
 func TestSchemaSubscribe(t *testing.T) {
-
 	testutil.RunSubscribes(t, []*testutil.TestSubscription{
 		{
 			Name: "subscribe without resolver",
@@ -281,7 +280,6 @@ func makeSubscriptionSchema(t *testing.T, c graphql.ObjectConfig) graphql.Schema
 var dummyQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Query",
 	Fields: graphql.Fields{
-
 		"hello": &graphql.Field{Type: graphql.String},
 	},
 })

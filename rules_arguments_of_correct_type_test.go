@@ -17,6 +17,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidValue_GoodIntValue(t *testing.T) {
         }
     `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidValue_GoodBooleanValue(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -26,6 +27,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidValue_GoodBooleanValue(t *testing.
         }
     `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidValue_GoodStringValue(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -35,6 +37,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidValue_GoodStringValue(t *testing.T
         }
     `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidValue_GoodFloatValue(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -44,6 +47,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidValue_GoodFloatValue(t *testing.T)
         }
     `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidValue_IntIntoFloat(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -53,6 +57,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidValue_IntIntoFloat(t *testing.T) {
         }
     `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidValue_IntIntoID(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -62,6 +67,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidValue_IntIntoID(t *testing.T) {
         }
     `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidValue_StringIntoID(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -71,6 +77,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidValue_StringIntoID(t *testing.T) {
         }
     `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidValue_GoodEnumValue(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -96,6 +103,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidStringValues_IntIntoString(t *te
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidStringValues_FloatIntoString(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -111,6 +119,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidStringValues_FloatIntoString(t *
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidStringValues_BooleanIntoString(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -126,6 +135,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidStringValues_BooleanIntoString(t
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidStringValues_UnquotedStringIntoString(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -157,6 +167,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidIntValues_StringIntoInt(t *testi
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidIntValues_BigIntIntoInt(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -172,6 +183,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidIntValues_BigIntIntoInt(t *testi
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidIntValues_UnquotedStringIntoInt(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -187,6 +199,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidIntValues_UnquotedStringIntoInt(
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidIntValues_SimpleFloatIntoInt(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -202,6 +215,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidIntValues_SimpleFloatIntoInt(t *
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidIntValues_FloatIntoInt(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -233,6 +247,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidFloatValues_StringIntoFloat(t *t
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidFloatValues_BooleanIntoFloat(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -248,6 +263,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidFloatValues_BooleanIntoFloat(t *
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidFloatValues_UnquotedIntoFloat(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -279,6 +295,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidBooleanValues_IntIntoBoolean(t *
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidBooleanValues_FloatIntoBoolean(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -294,6 +311,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidBooleanValues_FloatIntoBoolean(t
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidBooleanValues_StringIntoBoolean(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -309,6 +327,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidBooleanValues_StringIntoBoolean(
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidBooleanValues_UnquotedStringIntoBoolean(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -340,6 +359,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidIDValue_FloatIntoID(t *testing.T
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidIDValue_BooleanIntoID(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -355,6 +375,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidIDValue_BooleanIntoID(t *testing
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidIDValue_UnquotedIntoID(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -386,6 +407,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_IntIntoEnum(t *testing
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_FloatIntoEnum(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -401,6 +423,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_FloatIntoEnum(t *testi
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_StringIntoEnum(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -416,6 +439,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_StringIntoEnum(t *test
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_BooleanIntoEnum(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -431,6 +455,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_BooleanIntoEnum(t *tes
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_UnknownEnumValueIntoEnum(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -446,6 +471,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_UnknownEnumValueIntoEn
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidEnumValue_DifferentCaseEnumValueIntoEnum(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -471,6 +497,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidListValue_GoodListValue(t *testing
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidListValue_EmptyListValue(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -480,6 +507,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidListValue_EmptyListValue(t *testin
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidListValue_SingleValueIntoList(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -505,6 +533,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidListValue_IncorrectItemType(t *t
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidListValue_SingleValueOfIncorrentType(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -530,6 +559,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_ArgOnOptionalArg(
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_NoArgOnOptionalArg(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -539,6 +569,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_NoArgOnOptionalAr
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_MultipleArgs(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -548,6 +579,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_MultipleArgs(t *t
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_MultipleArgsReverseOrder(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -557,6 +589,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_MultipleArgsRever
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_NoArgsOnMultipleOptional(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -566,6 +599,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_NoArgsOnMultipleO
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_OneArgOnMultipleOptional(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -575,6 +609,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_OneArgOnMultipleO
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_SecondArgOnMultipleOptional(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -584,6 +619,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_SecondArgOnMultip
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_MultipleRequiredsOnMixedList(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -593,6 +629,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_MultipleRequireds
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_MultipleRequiredsAndOptionalOnMixedList(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -602,6 +639,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_MultipleRequireds
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidNonNullableValue_AllRequiredsAndOptionalOnMixedList(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -631,6 +669,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidNonNullableValue_IncorrectValueT
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidNonNullableValue_IncorrectValueAndMissingArgument(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -656,6 +695,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_OptionalArg_Despi
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_PartialObject_OnlyRequired(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -665,6 +705,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_PartialObject_Onl
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_PartialObject_RequiredFieldCanBeFalsey(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -674,6 +715,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_PartialObject_Req
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_PartialObject_IncludingRequired(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -683,6 +725,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_PartialObject_Inc
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_FullObject(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -698,6 +741,7 @@ func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_FullObject(t *tes
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_ValidInputObjectValue_FullObject_WithFieldsInDifferentOrder(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -729,6 +773,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidInputObjectValue_PartialObject_M
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidInputObjectValue_PartialObject_InvalidFieldType(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -747,6 +792,7 @@ func TestValidate_ArgValuesOfCorrectType_InvalidInputObjectValue_PartialObject_I
 			),
 		})
 }
+
 func TestValidate_ArgValuesOfCorrectType_InvalidInputObjectValue_PartialObject_UnknownFieldArg(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {
@@ -778,6 +824,7 @@ func TestValidate_ArgValuesOfCorrectType_DirectiveArguments_WithDirectivesOfVali
         }
         `)
 }
+
 func TestValidate_ArgValuesOfCorrectType_DirectiveArguments_WithDirectivesWithIncorrectTypes(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ArgumentsOfCorrectTypeRule, `
         {

@@ -14,17 +14,20 @@ func TestValidate_PossibleFragmentSpreads_OfTheSameObject(t *testing.T) {
       fragment dogFragment on Dog { barkVolume }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_OfTheSameObjectWithInlineFragment(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment objectWithinObjectAnon on Dog { ... on Dog { barkVolume } }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_ObjectIntoAnImplementedInterface(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment objectWithinInterface on Pet { ...dogFragment }
       fragment dogFragment on Dog { barkVolume }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_ObjectIntoContainingUnion(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment objectWithinUnion on CatOrDog { ...dogFragment }
@@ -38,12 +41,14 @@ func TestValidate_PossibleFragmentSpreads_UnionIntoContainedObject(t *testing.T)
       fragment catOrDogFragment on CatOrDog { __typename }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_UnionIntoOverlappingInterface(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment unionWithinInterface on Pet { ...catOrDogFragment }
       fragment catOrDogFragment on CatOrDog { __typename }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_UnionIntoOverlappingUnion(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment unionWithinUnion on DogOrHuman { ...catOrDogFragment }
@@ -57,23 +62,27 @@ func TestValidate_PossibleFragmentSpreads_InterfaceIntoImplementedObject(t *test
       fragment petFragment on Pet { name }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_InterfaceIntoOverlappingInterface(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment interfaceWithinInterface on Pet { ...beingFragment }
       fragment beingFragment on Being { name }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_InterfaceIntoOverlappingInterfaceInInlineFragment(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment interfaceWithinInterface on Pet { ... on Being { name } }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_InterfaceIntoOverlappingUnion(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment interfaceWithinUnion on CatOrDog { ...petFragment }
       fragment petFragment on Pet { name }
     `)
 }
+
 func TestValidate_PossibleFragmentSpreads_DifferentObjectIntoObject(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment invalidObjectWithinObject on Cat { ...dogFragment }
@@ -83,6 +92,7 @@ func TestValidate_PossibleFragmentSpreads_DifferentObjectIntoObject(t *testing.T
 			`type "Cat" can never be of type "Dog".`, 2, 51),
 	})
 }
+
 func TestValidate_PossibleFragmentSpreads_DifferentObjectIntoObjectInInlineFragment(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment invalidObjectWithinObjectAnon on Cat {
@@ -103,6 +113,7 @@ func TestValidate_PossibleFragmentSpreads_ObjectIntoNotImplementingInterface(t *
 			`type "Pet" can never be of type "Human".`, 2, 54),
 	})
 }
+
 func TestValidate_PossibleFragmentSpreads_ObjectIntoNotContainingUnion(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment invalidObjectWithinUnion on CatOrDog { ...humanFragment }
@@ -122,6 +133,7 @@ func TestValidate_PossibleFragmentSpreads_UnionIntoNotContainedObject(t *testing
 			`type "Human" can never be of type "CatOrDog".`, 2, 52),
 	})
 }
+
 func TestValidate_PossibleFragmentSpreads_UnionIntoNonOverlappingInterface(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment invalidUnionWithinInterface on Pet { ...humanOrAlienFragment }
@@ -131,6 +143,7 @@ func TestValidate_PossibleFragmentSpreads_UnionIntoNonOverlappingInterface(t *te
 			`type "Pet" can never be of type "HumanOrAlien".`, 2, 53),
 	})
 }
+
 func TestValidate_PossibleFragmentSpreads_UnionIntoNonOverlappingUnion(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment invalidUnionWithinUnion on CatOrDog { ...humanOrAlienFragment }
@@ -150,6 +163,7 @@ func TestValidate_PossibleFragmentSpreads_InterfaceIntoNonImplementingObject(t *
 			`type "Cat" can never be of type "Intelligent".`, 2, 54),
 	})
 }
+
 func TestValidate_PossibleFragmentSpreads_InterfaceIntoNonOverlappingInterface(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment invalidInterfaceWithinInterface on Pet {
@@ -161,6 +175,7 @@ func TestValidate_PossibleFragmentSpreads_InterfaceIntoNonOverlappingInterface(t
 			`type "Pet" can never be of type "Intelligent".`, 3, 9),
 	})
 }
+
 func TestValidate_PossibleFragmentSpreads_InterfaceIntoNonOverlappingInterfaceInInlineFragment(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment invalidInterfaceWithinInterfaceAnon on Pet {
@@ -171,6 +186,7 @@ func TestValidate_PossibleFragmentSpreads_InterfaceIntoNonOverlappingInterfaceIn
 			`type "Pet" can never be of type "Intelligent".`, 3, 9),
 	})
 }
+
 func TestValidate_PossibleFragmentSpreads_InterfaceIntoNonOverlappingUnion(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.PossibleFragmentSpreadsRule, `
       fragment invalidInterfaceWithinUnion on HumanOrAlien { ...petFragment }

@@ -84,14 +84,14 @@ func importJSONDataFromFile(fileName string) error {
 		}
 	}
 
-	var userType = graphql.NewObject(
+	userType := graphql.NewObject(
 		graphql.ObjectConfig{
 			Name:   "User",
 			Fields: fields,
 		},
 	)
 
-	var queryType = graphql.NewObject(
+	queryType := graphql.NewObject(
 		graphql.ObjectConfig{
 			Name: "Query",
 			Fields: graphql.Fields{

@@ -33,6 +33,7 @@ func TestIsEqualType_NonNullOfSameTypeAreEqual(t *testing.T) {
 		t.Fatalf("Expected non-null of same type are equal")
 	}
 }
+
 func TestIsEqualType_NonNullIsNotEqualToNullable(t *testing.T) {
 	if isEqualType(NewNonNull(Int), Int) {
 		t.Fatalf("Expected non-null is not equal to nullable")
@@ -60,6 +61,7 @@ func TestIsTypeSubTypeOf_SameReferenceIsSubtype(t *testing.T) {
 		t.Fatalf("Expected same reference is subtype")
 	}
 }
+
 func TestIsTypeSubTypeOf_IntIsNotSubtypeOfFloat(t *testing.T) {
 	schema := testSchemaForIsTypeSubTypeOfTest(t, Fields{
 		"field": &Field{Type: String},
@@ -68,6 +70,7 @@ func TestIsTypeSubTypeOf_IntIsNotSubtypeOfFloat(t *testing.T) {
 		t.Fatalf("Expected int is not subtype of float")
 	}
 }
+
 func TestIsTypeSubTypeOf_NonNullIsSubtypeOfNullable(t *testing.T) {
 	schema := testSchemaForIsTypeSubTypeOfTest(t, Fields{
 		"field": &Field{Type: String},
@@ -76,6 +79,7 @@ func TestIsTypeSubTypeOf_NonNullIsSubtypeOfNullable(t *testing.T) {
 		t.Fatalf("Expected non-null is subtype of nullable")
 	}
 }
+
 func TestIsTypeSubTypeOf_NullableIsNotSubtypeOfNonNull(t *testing.T) {
 	schema := testSchemaForIsTypeSubTypeOfTest(t, Fields{
 		"field": &Field{Type: String},
@@ -84,6 +88,7 @@ func TestIsTypeSubTypeOf_NullableIsNotSubtypeOfNonNull(t *testing.T) {
 		t.Fatalf("Expected nullable is not subtype of non-null")
 	}
 }
+
 func TestIsTypeSubTypeOf_ItemIsNotSubTypeOfList(t *testing.T) {
 	schema := testSchemaForIsTypeSubTypeOfTest(t, Fields{
 		"field": &Field{Type: String},
@@ -92,6 +97,7 @@ func TestIsTypeSubTypeOf_ItemIsNotSubTypeOfList(t *testing.T) {
 		t.Fatalf("Expected item is not subtype of list")
 	}
 }
+
 func TestIsTypeSubTypeOf_ListIsNotSubtypeOfItem(t *testing.T) {
 	schema := testSchemaForIsTypeSubTypeOfTest(t, Fields{
 		"field": &Field{Type: String},

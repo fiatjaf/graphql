@@ -15,6 +15,7 @@ func TestValidate_ScalarLeafs_ValidScalarSelection(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_ScalarLeafs_ObjectTypeMissingSelection(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ScalarLeafsRule, `
       query directQueryOnObjectWithoutSubFields {
@@ -24,6 +25,7 @@ func TestValidate_ScalarLeafs_ObjectTypeMissingSelection(t *testing.T) {
 		testutil.RuleError(`Field "human" of type "Human" must have a sub selection.`, 3, 9),
 	})
 }
+
 func TestValidate_ScalarLeafs_InterfaceTypeMissingSelection(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ScalarLeafsRule, `
       {
@@ -33,6 +35,7 @@ func TestValidate_ScalarLeafs_InterfaceTypeMissingSelection(t *testing.T) {
 		testutil.RuleError(`Field "pets" of type "[Pet]" must have a sub selection.`, 3, 17),
 	})
 }
+
 func TestValidate_ScalarLeafs_ValidScalarSelectionWithArgs(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ScalarLeafsRule, `
       fragment scalarSelectionWithArgs on Dog {
@@ -50,6 +53,7 @@ func TestValidate_ScalarLeafs_ScalarSelectionNotAllowedOnBoolean(t *testing.T) {
 		testutil.RuleError(`Field "barks" of type "Boolean" must not have a sub selection.`, 3, 15),
 	})
 }
+
 func TestValidate_ScalarLeafs_ScalarSelectionNotAllowedOnEnum(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ScalarLeafsRule, `
       fragment scalarSelectionsNotAllowedOnEnum on Cat {
@@ -59,6 +63,7 @@ func TestValidate_ScalarLeafs_ScalarSelectionNotAllowedOnEnum(t *testing.T) {
 		testutil.RuleError(`Field "furColor" of type "FurColor" must not have a sub selection.`, 3, 18),
 	})
 }
+
 func TestValidate_ScalarLeafs_ScalarSelectionNotAllowedWithArgs(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ScalarLeafsRule, `
       fragment scalarSelectionsNotAllowedWithArgs on Dog {
@@ -68,6 +73,7 @@ func TestValidate_ScalarLeafs_ScalarSelectionNotAllowedWithArgs(t *testing.T) {
 		testutil.RuleError(`Field "doesKnowCommand" of type "Boolean" must not have a sub selection.`, 3, 42),
 	})
 }
+
 func TestValidate_ScalarLeafs_ScalarSelectionNotAllowedWithDirectives(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ScalarLeafsRule, `
       fragment scalarSelectionsNotAllowedWithDirectives on Dog {
@@ -77,6 +83,7 @@ func TestValidate_ScalarLeafs_ScalarSelectionNotAllowedWithDirectives(t *testing
 		testutil.RuleError(`Field "name" of type "String" must not have a sub selection.`, 3, 33),
 	})
 }
+
 func TestValidate_ScalarLeafs_ScalarSelectionNotAllowedWithDirectivesAndArgs(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ScalarLeafsRule, `
       fragment scalarSelectionsNotAllowedWithDirectivesAndArgs on Dog {

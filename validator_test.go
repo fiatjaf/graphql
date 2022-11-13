@@ -26,11 +26,9 @@ func expectValid(t *testing.T, schema *graphql.Schema, queryString string) {
 	if !validationResult.IsValid || len(validationResult.Errors) > 0 {
 		t.Fatalf("Unexpected error: %v", validationResult.Errors)
 	}
-
 }
 
 func TestValidator_SupportsFullValidation_ValidatesQueries(t *testing.T) {
-
 	expectValid(t, testutil.TestSchema, `
       query {
         catOrDog {
@@ -47,7 +45,6 @@ func TestValidator_SupportsFullValidation_ValidatesQueries(t *testing.T) {
 
 // NOTE: experimental
 func TestValidator_SupportsFullValidation_ValidatesUsingACustomTypeInfo(t *testing.T) {
-
 	// This TypeInfo will never return a valid field.
 	typeInfo := graphql.NewTypeInfo(&graphql.TypeInfoConfig{
 		Schema: testutil.TestSchema,

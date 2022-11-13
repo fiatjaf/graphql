@@ -15,6 +15,7 @@ func TestValidate_AnonymousOperationMustBeAlone_NoOperations(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_AnonymousOperationMustBeAlone_OneAnonOperation(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.LoneAnonymousOperationRule, `
       {
@@ -22,6 +23,7 @@ func TestValidate_AnonymousOperationMustBeAlone_OneAnonOperation(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_AnonymousOperationMustBeAlone_MultipleNamedOperations(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.LoneAnonymousOperationRule, `
       query Foo {
@@ -33,6 +35,7 @@ func TestValidate_AnonymousOperationMustBeAlone_MultipleNamedOperations(t *testi
       }
     `)
 }
+
 func TestValidate_AnonymousOperationMustBeAlone_AnonOperationWithFragment(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.LoneAnonymousOperationRule, `
       {
@@ -43,6 +46,7 @@ func TestValidate_AnonymousOperationMustBeAlone_AnonOperationWithFragment(t *tes
       }
     `)
 }
+
 func TestValidate_AnonymousOperationMustBeAlone_MultipleAnonOperations(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.LoneAnonymousOperationRule, `
       {
@@ -56,6 +60,7 @@ func TestValidate_AnonymousOperationMustBeAlone_MultipleAnonOperations(t *testin
 		testutil.RuleError(`This anonymous operation must be the only defined operation.`, 5, 7),
 	})
 }
+
 func TestValidate_AnonymousOperationMustBeAlone_AnonOperationWithAMutation(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.LoneAnonymousOperationRule, `
       {

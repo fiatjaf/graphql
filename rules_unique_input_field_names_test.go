@@ -15,6 +15,7 @@ func TestValidate_UniqueInputFieldNames_InputObjectWithFields(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueInputFieldNames_SameInputObjectWithinTwoArgs(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueInputFieldNamesRule, `
       {
@@ -22,6 +23,7 @@ func TestValidate_UniqueInputFieldNames_SameInputObjectWithinTwoArgs(t *testing.
       }
     `)
 }
+
 func TestValidate_UniqueInputFieldNames_MultipleInputObjectFields(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueInputFieldNamesRule, `
       {
@@ -29,6 +31,7 @@ func TestValidate_UniqueInputFieldNames_MultipleInputObjectFields(t *testing.T) 
       }
     `)
 }
+
 func TestValidate_UniqueInputFieldNames_AllowsForNestedInputObjectsWithSimilarFields(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueInputFieldNamesRule, `
       {
@@ -44,6 +47,7 @@ func TestValidate_UniqueInputFieldNames_AllowsForNestedInputObjectsWithSimilarFi
       }
     `)
 }
+
 func TestValidate_UniqueInputFieldNames_DuplicateInputObjectFields(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueInputFieldNamesRule, `
       {
@@ -53,6 +57,7 @@ func TestValidate_UniqueInputFieldNames_DuplicateInputObjectFields(t *testing.T)
 		testutil.RuleError(`There can be only one input field named "f1".`, 3, 22, 3, 35),
 	})
 }
+
 func TestValidate_UniqueInputFieldNames_ManyDuplicateInputObjectFields(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueInputFieldNamesRule, `
       {

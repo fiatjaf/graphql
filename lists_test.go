@@ -12,7 +12,7 @@ import (
 
 func checkList(t *testing.T, testType graphql.Type, testData interface{}, expected *graphql.Result) {
 	// TODO: uncomment t.Helper when support for go1.8 is dropped.
-	//t.Helper()
+	// t.Helper()
 	data := map[string]interface{}{
 		"test": testData,
 	}
@@ -52,7 +52,6 @@ func checkList(t *testing.T, testType graphql.Type, testData interface{}, expect
 	if !testutil.EqualResults(expected, result) {
 		t.Fatalf("Unexpected result, Diff: %v", testutil.Diff(expected, result))
 	}
-
 }
 
 // Describe [T] Array<T>
@@ -72,6 +71,7 @@ func TestLists_ListOfNullableObjects_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_ListOfNullableObjects_ContainsNull(t *testing.T) {
 	ttype := graphql.NewList(graphql.Int)
 	data := []interface{}{
@@ -88,6 +88,7 @@ func TestLists_ListOfNullableObjects_ContainsNull(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_ListOfNullableObjects_ReturnsNull(t *testing.T) {
 	ttype := graphql.NewList(graphql.Int)
 	expected := &graphql.Result{
@@ -122,6 +123,7 @@ func TestLists_ListOfNullableFunc_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_ListOfNullableFunc_ContainsNull(t *testing.T) {
 	ttype := graphql.NewList(graphql.Int)
 
@@ -143,6 +145,7 @@ func TestLists_ListOfNullableFunc_ContainsNull(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_ListOfNullableFunc_ReturnsNull(t *testing.T) {
 	ttype := graphql.NewList(graphql.Int)
 
@@ -186,6 +189,7 @@ func TestLists_ListOfNullableArrayOfFuncContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_ListOfNullableArrayOfFuncContainsNulls(t *testing.T) {
 	ttype := graphql.NewList(graphql.Int)
 
@@ -231,6 +235,7 @@ func TestLists_NonNullListOfNullableObjectsContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNullableObjectsContainsNull(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.Int))
 	data := []interface{}{
@@ -247,6 +252,7 @@ func TestLists_NonNullListOfNullableObjectsContainsNull(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNullableObjectsReturnsNull(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.Int))
 	expected := &graphql.Result{
@@ -294,6 +300,7 @@ func TestLists_NonNullListOfNullableFunc_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNullableFunc_ContainsNull(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.Int))
 
@@ -315,6 +322,7 @@ func TestLists_NonNullListOfNullableFunc_ContainsNull(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNullableFunc_ReturnsNull(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.Int))
 
@@ -371,6 +379,7 @@ func TestLists_NonNullListOfNullableArrayOfFunc_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNullableArrayOfFunc_ContainsNulls(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.Int))
 
@@ -416,6 +425,7 @@ func TestLists_NullableListOfNonNullObjects_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NullableListOfNonNullObjects_ContainsNull(t *testing.T) {
 	ttype := graphql.NewList(graphql.NewNonNull(graphql.Int))
 	data := []interface{}{
@@ -446,6 +456,7 @@ func TestLists_NullableListOfNonNullObjects_ContainsNull(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NullableListOfNonNullObjects_ReturnsNull(t *testing.T) {
 	ttype := graphql.NewList(graphql.NewNonNull(graphql.Int))
 
@@ -481,6 +492,7 @@ func TestLists_NullableListOfNonNullFunc_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NullableListOfNonNullFunc_ContainsNull(t *testing.T) {
 	ttype := graphql.NewList(graphql.NewNonNull(graphql.Int))
 
@@ -516,6 +528,7 @@ func TestLists_NullableListOfNonNullFunc_ContainsNull(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NullableListOfNonNullFunc_ReturnsNull(t *testing.T) {
 	ttype := graphql.NewList(graphql.NewNonNull(graphql.Int))
 
@@ -559,6 +572,7 @@ func TestLists_NullableListOfNonNullArrayOfFunc_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NullableListOfNonNullArrayOfFunc_ContainsNulls(t *testing.T) {
 	ttype := graphql.NewList(graphql.NewNonNull(graphql.Int))
 
@@ -625,6 +639,7 @@ func TestLists_NonNullListOfNonNullObjects_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNonNullObjects_ContainsNull(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.NewNonNull(graphql.Int)))
 	data := []interface{}{
@@ -653,6 +668,7 @@ func TestLists_NonNullListOfNonNullObjects_ContainsNull(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNonNullObjects_ReturnsNull(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.NewNonNull(graphql.Int)))
 	expected := &graphql.Result{
@@ -700,6 +716,7 @@ func TestLists_NonNullListOfNonNullFunc_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNonNullFunc_ContainsNull(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.NewNonNull(graphql.Int)))
 
@@ -733,6 +750,7 @@ func TestLists_NonNullListOfNonNullFunc_ContainsNull(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNonNullFunc_ReturnsNull(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.NewNonNull(graphql.Int)))
 
@@ -789,6 +807,7 @@ func TestLists_NonNullListOfNonNullArrayOfFunc_ContainsValues(t *testing.T) {
 	}
 	checkList(t, ttype, data, expected)
 }
+
 func TestLists_NonNullListOfNonNullArrayOfFunc_ContainsNulls(t *testing.T) {
 	ttype := graphql.NewNonNull(graphql.NewList(graphql.NewNonNull(graphql.Int)))
 
@@ -882,7 +901,7 @@ func TestLists_ArrayOfNullableObjects_ContainsValues(t *testing.T) {
 }
 
 func TestLists_ValueMayBeNilPointer(t *testing.T) {
-	var listTestSchema, _ = graphql.NewSchema(graphql.SchemaConfig{
+	listTestSchema, _ := graphql.NewSchema(graphql.SchemaConfig{
 		Query: graphql.NewObject(graphql.ObjectConfig{
 			Name: "Query",
 			Fields: graphql.Fields{

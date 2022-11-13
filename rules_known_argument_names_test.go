@@ -15,6 +15,7 @@ func TestValidate_KnownArgumentNames_SingleArgIsKnown(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownArgumentNames_MultipleArgsAreKnown(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.KnownArgumentNamesRule, `
       fragment multipleArgs on ComplicatedArgs {
@@ -22,6 +23,7 @@ func TestValidate_KnownArgumentNames_MultipleArgsAreKnown(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownArgumentNames_IgnoresArgsOfUnknownFields(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.KnownArgumentNamesRule, `
       fragment argOnUnknownField on Dog {
@@ -29,6 +31,7 @@ func TestValidate_KnownArgumentNames_IgnoresArgsOfUnknownFields(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownArgumentNames_MultipleArgsInReverseOrderAreKnown(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.KnownArgumentNamesRule, `
       fragment multipleArgsReverseOrder on ComplicatedArgs {
@@ -36,6 +39,7 @@ func TestValidate_KnownArgumentNames_MultipleArgsInReverseOrderAreKnown(t *testi
       }
     `)
 }
+
 func TestValidate_KnownArgumentNames_NoArgsOnOptionalArg(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.KnownArgumentNamesRule, `
       fragment noArgOnOptionalArg on Dog {
@@ -43,6 +47,7 @@ func TestValidate_KnownArgumentNames_NoArgsOnOptionalArg(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownArgumentNames_ArgsAreKnownDeeply(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.KnownArgumentNamesRule, `
       {
@@ -59,6 +64,7 @@ func TestValidate_KnownArgumentNames_ArgsAreKnownDeeply(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownArgumentNames_DirectiveArgsAreKnown(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.KnownArgumentNamesRule, `
       {
@@ -66,6 +72,7 @@ func TestValidate_KnownArgumentNames_DirectiveArgsAreKnown(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownArgumentNames_UndirectiveArgsAreInvalid(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownArgumentNamesRule, `
       {
@@ -75,6 +82,7 @@ func TestValidate_KnownArgumentNames_UndirectiveArgsAreInvalid(t *testing.T) {
 		testutil.RuleError(`Unknown argument "unless" on directive "@skip".`, 3, 19),
 	})
 }
+
 func TestValidate_KnownArgumentNames_UndirectiveArgsAreInvalidWithSuggestion(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownArgumentNamesRule, `
       {
@@ -85,6 +93,7 @@ func TestValidate_KnownArgumentNames_UndirectiveArgsAreInvalidWithSuggestion(t *
 			`Did you mean "if"?`, 3, 19),
 	})
 }
+
 func TestValidate_KnownArgumentNames_InvalidArgName(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownArgumentNamesRule, `
       fragment invalidArgName on Dog {
@@ -94,6 +103,7 @@ func TestValidate_KnownArgumentNames_InvalidArgName(t *testing.T) {
 		testutil.RuleError(`Unknown argument "unknown" on field "doesKnowCommand" of type "Dog".`, 3, 25),
 	})
 }
+
 func TestValidate_KnownArgumentNames_UnknownArgsAmongstKnownArgs(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownArgumentNamesRule, `
       fragment oneGoodArgOneInvalidArg on Dog {
@@ -104,6 +114,7 @@ func TestValidate_KnownArgumentNames_UnknownArgsAmongstKnownArgs(t *testing.T) {
 		testutil.RuleError(`Unknown argument "unknown" on field "doesKnowCommand" of type "Dog".`, 3, 55),
 	})
 }
+
 func TestValidate_KnownArgumentNames_UnknownArgsAmongstKnownArgsWithSuggestions(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownArgumentNamesRule, `
       fragment oneGoodArgOneInvalidArg on Dog {
@@ -114,6 +125,7 @@ func TestValidate_KnownArgumentNames_UnknownArgsAmongstKnownArgsWithSuggestions(
 			`Did you mean "dogCommand" or "nextDogCommand"?`, 3, 25),
 	})
 }
+
 func TestValidate_KnownArgumentNames_UnknownArgsDeeply(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownArgumentNamesRule, `
       {

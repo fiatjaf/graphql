@@ -14,7 +14,6 @@ type color struct {
 }
 
 func ListSchemaWithXItems(x int) graphql.Schema {
-
 	list := generateXListItems(x)
 
 	color := graphql.NewObject(graphql.ObjectConfig{

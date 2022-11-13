@@ -27,6 +27,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_ArgOnOptionalAr
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_NoArgOnOptionalArg(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -36,6 +37,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_NoArgOnOptional
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_MultipleArgs(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -45,6 +47,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_MultipleArgs(t 
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_MultipleArgsReverseOrder(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -54,6 +57,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_MultipleArgsRev
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_NoArgsOnMultipleOptional(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -63,6 +67,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_NoArgsOnMultipl
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_OneArgOnMultipleOptional(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -72,6 +77,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_OneArgOnMultipl
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_SecondArgOnMultipleOptional(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -81,6 +87,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_SecondArgOnMult
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_MultipleReqsOnMixedList(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -90,6 +97,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_MultipleReqsOnM
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_MultipleReqsAndOneOptOnMixedList(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -99,6 +107,7 @@ func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_MultipleReqsAnd
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_ValidNonNullableValue_AllReqsAndOptsOnMixedList(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -120,6 +129,7 @@ func TestValidate_ProvidedNonNullArguments_InvalidNonNullableValue_MissingOneNon
 		testutil.RuleError(`Field "multipleReqs" argument "req1" of type "Int!" is required but not provided.`, 4, 13),
 	})
 }
+
 func TestValidate_ProvidedNonNullArguments_InvalidNonNullableValue_MissingMultipleNonNullableArguments(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -132,6 +142,7 @@ func TestValidate_ProvidedNonNullArguments_InvalidNonNullableValue_MissingMultip
 		testutil.RuleError(`Field "multipleReqs" argument "req2" of type "Int!" is required but not provided.`, 4, 13),
 	})
 }
+
 func TestValidate_ProvidedNonNullArguments_InvalidNonNullableValue_IncorrectValueAndMissingArgument(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -151,6 +162,7 @@ func TestValidate_ProvidedNonNullArguments_DirectiveArguments_IgnoresUnknownDire
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_DirectiveArguments_WithDirectivesOfValidTypes(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {
@@ -163,6 +175,7 @@ func TestValidate_ProvidedNonNullArguments_DirectiveArguments_WithDirectivesOfVa
         }
     `)
 }
+
 func TestValidate_ProvidedNonNullArguments_DirectiveArguments_WithDirectiveWithMissingTypes(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.ProvidedNonNullArgumentsRule, `
         {

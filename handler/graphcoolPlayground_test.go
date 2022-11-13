@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fiatjaf/graphql/testutil"
 	"github.com/fiatjaf/graphql/handler"
+	"github.com/fiatjaf/graphql/testutil"
 )
 
 func TestRenderPlayground(t *testing.T) {

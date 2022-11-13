@@ -20,6 +20,7 @@ func TestValidate_KnownTypeNames_KnownTypeNamesAreValid(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownTypeNames_UnknownTypeNamesAreInValid(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownTypeNamesRule, `
       query Foo($var: JumbledUpLetters) {

@@ -2,6 +2,7 @@ package gqlerrors
 
 import (
 	"errors"
+
 	"github.com/fiatjaf/graphql/language/ast"
 )
 

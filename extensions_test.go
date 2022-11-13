@@ -74,7 +74,6 @@ func TestExtensionParseDidStartPanic(t *testing.T) {
 			panic(errors.New("test error"))
 		}
 		return ctx, func(err error) {
-
 		}
 	}
 
@@ -133,7 +132,6 @@ func TestExtensionValidationDidStartPanic(t *testing.T) {
 			panic(errors.New("test error"))
 		}
 		return ctx, func([]gqlerrors.FormattedError) {
-
 		}
 	}
 
@@ -192,7 +190,6 @@ func TestExtensionExecutionDidStartPanic(t *testing.T) {
 			panic(errors.New("test error"))
 		}
 		return ctx, func(r *graphql.Result) {
-
 		}
 	}
 
@@ -254,7 +251,6 @@ func TestExtensionResolveFieldDidStartPanic(t *testing.T) {
 			panic(errors.New("test error"))
 		}
 		return ctx, func(v interface{}, err error) {
-
 		}
 	}
 
@@ -389,28 +385,24 @@ func newtestExt(name string) *testExt {
 	if ext.parseDidStartFn == nil {
 		ext.parseDidStartFn = func(ctx context.Context) (context.Context, graphql.ParseFinishFunc) {
 			return ctx, func(err error) {
-
 			}
 		}
 	}
 	if ext.validationDidStartFn == nil {
 		ext.validationDidStartFn = func(ctx context.Context) (context.Context, graphql.ValidationFinishFunc) {
 			return ctx, func([]gqlerrors.FormattedError) {
-
 			}
 		}
 	}
 	if ext.executionDidStartFn == nil {
 		ext.executionDidStartFn = func(ctx context.Context) (context.Context, graphql.ExecutionFinishFunc) {
 			return ctx, func(r *graphql.Result) {
-
 			}
 		}
 	}
 	if ext.resolveFieldDidStartFn == nil {
 		ext.resolveFieldDidStartFn = func(ctx context.Context, i *graphql.ResolveInfo) (context.Context, graphql.ResolveFieldFinishFunc) {
 			return ctx, func(v interface{}, err error) {
-
 			}
 		}
 	}

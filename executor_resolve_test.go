@@ -2,10 +2,11 @@ package graphql_test
 
 import (
 	"encoding/json"
-	"github.com/fiatjaf/graphql"
-	"github.com/fiatjaf/graphql/testutil"
 	"reflect"
 	"testing"
+
+	"github.com/fiatjaf/graphql"
+	"github.com/fiatjaf/graphql/testutil"
 )
 
 func testSchema(t *testing.T, testField *graphql.Field) graphql.Schema {
@@ -115,7 +116,6 @@ func TestExecutesResolveFunction_UsesProvidedResolveFunction(t *testing.T) {
 }
 
 func TestExecutesResolveFunction_UsesProvidedResolveFunction_SourceIsStruct_WithoutJSONTags(t *testing.T) {
-
 	// For structs without JSON tags, it will map to upper-cased exported field names
 	type SubObjectWithoutJSONTags struct {
 		Str string
@@ -190,7 +190,6 @@ func TestExecutesResolveFunction_UsesProvidedResolveFunction_SourceIsStruct_With
 }
 
 func TestExecutesResolveFunction_UsesProvidedResolveFunction_SourceIsStruct_WithJSONTags(t *testing.T) {
-
 	// For structs without JSON tags, it will map to upper-cased exported field names
 	type SubObjectWithJSONTags struct {
 		OtherField string `json:""`

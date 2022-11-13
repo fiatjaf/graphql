@@ -44,7 +44,6 @@ func fieldsConflictReasonMessage(message interface{}) string {
 // fragments) either correspond to distinct response names or can be merged
 // without ambiguity.
 func OverlappingFieldsCanBeMergedRule(context *ValidationContext) *ValidationRuleInstance {
-
 	// A memoization for when two fragments are compared "between" each other for
 	// conflicts. Two fragments may be compared many times, so memoizing this can
 	// dramatically improve the performance of this validator.
@@ -210,7 +209,6 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetweenFieldsAndFr
 	}
 
 	return conflicts
-
 }
 
 // Collect all conflicts found between two fragments, including via spreading in
@@ -329,7 +327,8 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsWithin(conflicts [
 // each individual selection set.
 func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetween(conflicts []conflict, parentFieldsAreMutuallyExclusive bool,
 	fieldsInfo1 *fieldsAndFragmentNames,
-	fieldsInfo2 *fieldsAndFragmentNames) []conflict {
+	fieldsInfo2 *fieldsAndFragmentNames,
+) []conflict {
 	// A field map is a keyed collection, where each key represents a response
 	// name and the value at that key is a list of all fields which provide that
 	// response name. For any response name which appears in both provided field
@@ -355,7 +354,6 @@ func (rule *overlappingFieldsCanBeMergedRule) collectConflictsBetween(conflicts 
 
 // findConflict Determines if there is a conflict between two particular fields.
 func (rule *overlappingFieldsCanBeMergedRule) findConflict(parentFieldsAreMutuallyExclusive bool, responseName string, field *fieldDefPair, field2 *fieldDefPair) *conflict {
-
 	parentType1 := field.ParentType
 	ast1 := field.Field
 	def1 := field.FieldDef
@@ -573,6 +571,7 @@ func newPairSet() *pairSet {
 		data: map[string]map[string]bool{},
 	}
 }
+
 func (pair *pairSet) Has(a string, b string, areMutuallyExclusive bool) bool {
 	first, ok := pair.data[a]
 	if !ok || first == nil {
@@ -590,10 +589,12 @@ func (pair *pairSet) Has(a string, b string, areMutuallyExclusive bool) bool {
 	}
 	return true
 }
+
 func (pair *pairSet) Add(a string, b string, areMutuallyExclusive bool) {
 	pair.data = pairSetAdd(pair.data, a, b, areMutuallyExclusive)
 	pair.data = pairSetAdd(pair.data, b, a, areMutuallyExclusive)
 }
+
 func pairSetAdd(data map[string]map[string]bool, a, b string, areMutuallyExclusive bool) map[string]map[string]bool {
 	set, ok := data[a]
 	if !ok || set == nil {

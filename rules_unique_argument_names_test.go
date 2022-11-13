@@ -15,6 +15,7 @@ func TestValidate_UniqueArgumentNames_NoArgumentsOnField(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_NoArgumentsOnDirective(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -22,6 +23,7 @@ func TestValidate_UniqueArgumentNames_NoArgumentsOnDirective(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_ArgumentOnField(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -29,6 +31,7 @@ func TestValidate_UniqueArgumentNames_ArgumentOnField(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_ArgumentOnDirective(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -36,6 +39,7 @@ func TestValidate_UniqueArgumentNames_ArgumentOnDirective(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_SameArgumentOnTwoFields(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -44,6 +48,7 @@ func TestValidate_UniqueArgumentNames_SameArgumentOnTwoFields(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_SameArgumentOnFieldAndDirective(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -51,6 +56,7 @@ func TestValidate_UniqueArgumentNames_SameArgumentOnFieldAndDirective(t *testing
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_SameArgumentOnTwoDirectives(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -58,6 +64,7 @@ func TestValidate_UniqueArgumentNames_SameArgumentOnTwoDirectives(t *testing.T) 
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_MultipleFieldArguments(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -65,6 +72,7 @@ func TestValidate_UniqueArgumentNames_MultipleFieldArguments(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_MultipleDirectiveArguments(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -72,6 +80,7 @@ func TestValidate_UniqueArgumentNames_MultipleDirectiveArguments(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_UniqueArgumentNames_DuplicateFieldArguments(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -81,6 +90,7 @@ func TestValidate_UniqueArgumentNames_DuplicateFieldArguments(t *testing.T) {
 		testutil.RuleError(`There can be only one argument named "arg1".`, 3, 15, 3, 30),
 	})
 }
+
 func TestValidate_UniqueArgumentNames_ManyDuplicateFieldArguments(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -91,6 +101,7 @@ func TestValidate_UniqueArgumentNames_ManyDuplicateFieldArguments(t *testing.T) 
 		testutil.RuleError(`There can be only one argument named "arg1".`, 3, 15, 3, 45),
 	})
 }
+
 func TestValidate_UniqueArgumentNames_DuplicateDirectiveArguments(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueArgumentNamesRule, `
       {
@@ -100,6 +111,7 @@ func TestValidate_UniqueArgumentNames_DuplicateDirectiveArguments(t *testing.T) 
 		testutil.RuleError(`There can be only one argument named "arg1".`, 3, 26, 3, 41),
 	})
 }
+
 func TestValidate_UniqueArgumentNames_ManyDuplicateDirectiveArguments(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.UniqueArgumentNamesRule, `
       {

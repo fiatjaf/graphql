@@ -51,7 +51,7 @@ func TestRace(t *testing.T) {
 
 			wg.Wait()
 		} 
-	`), 0755)
+	`), 0o755)
 	if err != nil {
 		t.Fatal(err)
 	}

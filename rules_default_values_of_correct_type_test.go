@@ -15,6 +15,7 @@ func TestValidate_VariableDefaultValuesOfCorrectType_VariablesWithNoDefaultValue
       }
     `)
 }
+
 func TestValidate_VariableDefaultValuesOfCorrectType_RequiredVariablesWithoutDefaultValues(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.DefaultValuesOfCorrectTypeRule, `
       query RequiredValues($a: Int!, $b: String!) {
@@ -22,6 +23,7 @@ func TestValidate_VariableDefaultValuesOfCorrectType_RequiredVariablesWithoutDef
       }
     `)
 }
+
 func TestValidate_VariableDefaultValuesOfCorrectType_VariablesWithValidDefaultValues(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.DefaultValuesOfCorrectTypeRule, `
       query WithDefaultValues(
@@ -33,6 +35,7 @@ func TestValidate_VariableDefaultValuesOfCorrectType_VariablesWithValidDefaultVa
       }
     `)
 }
+
 func TestValidate_VariableDefaultValuesOfCorrectType_NoRequiredVariablesWithDefaultValues(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.DefaultValuesOfCorrectTypeRule, `
       query UnreachableDefaultValues($a: Int! = 3, $b: String! = "default") {
@@ -52,6 +55,7 @@ func TestValidate_VariableDefaultValuesOfCorrectType_NoRequiredVariablesWithDefa
 			),
 		})
 }
+
 func TestValidate_VariableDefaultValuesOfCorrectType_VariablesWithInvalidDefaultValues(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.DefaultValuesOfCorrectTypeRule, `
       query InvalidDefaultValues(
@@ -75,6 +79,7 @@ func TestValidate_VariableDefaultValuesOfCorrectType_VariablesWithInvalidDefault
 				5, 28),
 		})
 }
+
 func TestValidate_VariableDefaultValuesOfCorrectType_ComplexVariablesMissingRequiredField(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.DefaultValuesOfCorrectTypeRule, `
       query MissingRequiredField($a: ComplexInput = {intField: 3}) {
@@ -88,6 +93,7 @@ func TestValidate_VariableDefaultValuesOfCorrectType_ComplexVariablesMissingRequ
 				2, 53),
 		})
 }
+
 func TestValidate_VariableDefaultValuesOfCorrectType_ListVariablesWithInvalidItem(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.DefaultValuesOfCorrectTypeRule, `
       query InvalidItem($a: [String] = ["one", 2]) {

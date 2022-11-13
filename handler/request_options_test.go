@@ -25,6 +25,7 @@ func TestRequestOptions_GET_BasicQueryString(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_GET_ContentTypeApplicationGraphQL(t *testing.T) {
 	body := []byte(`query RebelsShipsQuery { rebels { name } }`)
 	expected := &RequestOptions{}
@@ -37,6 +38,7 @@ func TestRequestOptions_GET_ContentTypeApplicationGraphQL(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_GET_ContentTypeApplicationJSON(t *testing.T) {
 	body := `
 	{
@@ -52,6 +54,7 @@ func TestRequestOptions_GET_ContentTypeApplicationJSON(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_GET_ContentTypeApplicationUrlEncoded(t *testing.T) {
 	data := url.Values{}
 	data.Add("query", "query RebelsShipsQuery { rebels { name } }")
@@ -81,6 +84,7 @@ func TestRequestOptions_POST_BasicQueryString_WithNoBody(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_POST_ContentTypeApplicationGraphQL(t *testing.T) {
 	body := []byte(`query RebelsShipsQuery { rebels { name } }`)
 	expected := &RequestOptions{
@@ -95,6 +99,7 @@ func TestRequestOptions_POST_ContentTypeApplicationGraphQL(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_POST_ContentTypeApplicationGraphQL_WithNonGraphQLQueryContent(t *testing.T) {
 	body := []byte(`not a graphql query`)
 	expected := &RequestOptions{
@@ -109,6 +114,7 @@ func TestRequestOptions_POST_ContentTypeApplicationGraphQL_WithNonGraphQLQueryCo
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_POST_ContentTypeApplicationGraphQL_EmptyBody(t *testing.T) {
 	body := []byte(``)
 	expected := &RequestOptions{
@@ -123,6 +129,7 @@ func TestRequestOptions_POST_ContentTypeApplicationGraphQL_EmptyBody(t *testing.
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_POST_ContentTypeApplicationGraphQL_NilBody(t *testing.T) {
 	expected := &RequestOptions{}
 
@@ -195,6 +202,7 @@ func TestRequestOptions_POST_ContentTypeApplicationJSON_WithVariablesAsObject(t 
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_POST_ContentTypeApplicationJSON_WithVariablesAsString(t *testing.T) {
 	body := `
 	{
@@ -217,6 +225,7 @@ func TestRequestOptions_POST_ContentTypeApplicationJSON_WithVariablesAsString(t 
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_POST_ContentTypeApplicationJSON_WithInvalidJSON(t *testing.T) {
 	body := `INVALIDJSON{}`
 	expected := &RequestOptions{}
@@ -229,6 +238,7 @@ func TestRequestOptions_POST_ContentTypeApplicationJSON_WithInvalidJSON(t *testi
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_POST_ContentTypeApplicationJSON_WithNilBody(t *testing.T) {
 	expected := &RequestOptions{}
 
@@ -258,6 +268,7 @@ func TestRequestOptions_POST_ContentTypeApplicationUrlEncoded(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_POST_ContentTypeApplicationUrlEncoded_WithInvalidData(t *testing.T) {
 	data := "Invalid Data"
 
@@ -271,8 +282,8 @@ func TestRequestOptions_POST_ContentTypeApplicationUrlEncoded_WithInvalidData(t 
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
-func TestRequestOptions_POST_ContentTypeApplicationUrlEncoded_WithNilBody(t *testing.T) {
 
+func TestRequestOptions_POST_ContentTypeApplicationUrlEncoded_WithNilBody(t *testing.T) {
 	expected := &RequestOptions{}
 
 	req, _ := http.NewRequest("POST", "/graphql", nil)
@@ -298,6 +309,7 @@ func TestRequestOptions_PUT_BasicQueryString(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_PUT_ContentTypeApplicationGraphQL(t *testing.T) {
 	body := []byte(`query RebelsShipsQuery { rebels { name } }`)
 	expected := &RequestOptions{}
@@ -310,6 +322,7 @@ func TestRequestOptions_PUT_ContentTypeApplicationGraphQL(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_PUT_ContentTypeApplicationJSON(t *testing.T) {
 	body := `
 	{
@@ -325,6 +338,7 @@ func TestRequestOptions_PUT_ContentTypeApplicationJSON(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_PUT_ContentTypeApplicationUrlEncoded(t *testing.T) {
 	data := url.Values{}
 	data.Add("query", "query RebelsShipsQuery { rebels { name } }")
@@ -354,6 +368,7 @@ func TestRequestOptions_DELETE_BasicQueryString(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_DELETE_ContentTypeApplicationGraphQL(t *testing.T) {
 	body := []byte(`query RebelsShipsQuery { rebels { name } }`)
 	expected := &RequestOptions{}
@@ -366,6 +381,7 @@ func TestRequestOptions_DELETE_ContentTypeApplicationGraphQL(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_DELETE_ContentTypeApplicationJSON(t *testing.T) {
 	body := `
 	{
@@ -381,6 +397,7 @@ func TestRequestOptions_DELETE_ContentTypeApplicationJSON(t *testing.T) {
 		t.Fatalf("wrong result, graphql result diff: %v", testutil.Diff(expected, result))
 	}
 }
+
 func TestRequestOptions_DELETE_ContentTypeApplicationUrlEncoded(t *testing.T) {
 	data := url.Values{}
 	data.Add("query", "query RebelsShipsQuery { rebels { name } }")

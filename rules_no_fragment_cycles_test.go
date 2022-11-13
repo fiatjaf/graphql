@@ -14,12 +14,14 @@ func TestValidate_NoCircularFragmentSpreads_SingleReferenceIsValid(t *testing.T)
       fragment fragB on Dog { name }
     `)
 }
+
 func TestValidate_NoCircularFragmentSpreads_SpreadingTwiceIsNotCircular(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragA on Dog { ...fragB, ...fragB }
       fragment fragB on Dog { name }
     `)
 }
+
 func TestValidate_NoCircularFragmentSpreads_SpreadingTwiceIndirectlyIsNotCircular(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragA on Dog { ...fragB, ...fragC }
@@ -27,6 +29,7 @@ func TestValidate_NoCircularFragmentSpreads_SpreadingTwiceIndirectlyIsNotCircula
       fragment fragC on Dog { name }
     `)
 }
+
 func TestValidate_NoCircularFragmentSpreads_DoubleSpreadWithinAbstractTypes(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.NoFragmentCyclesRule, `
       fragment nameFragment on Pet {
@@ -40,6 +43,7 @@ func TestValidate_NoCircularFragmentSpreads_DoubleSpreadWithinAbstractTypes(t *t
       }
     `)
 }
+
 func TestValidate_NoCircularFragmentSpreads_DoesNotFalsePositiveOnUnknownFragment(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.NoFragmentCyclesRule, `
       fragment nameFragment on Pet {
@@ -47,6 +51,7 @@ func TestValidate_NoCircularFragmentSpreads_DoesNotFalsePositiveOnUnknownFragmen
       }
     `)
 }
+
 func TestValidate_NoCircularFragmentSpreads_SpreadingRecursivelyWithinFieldFails(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragA on Human { relatives { ...fragA } },
@@ -62,6 +67,7 @@ func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfDirectly(t *testing
 		testutil.RuleError(`Cannot spread fragment "fragA" within itself.`, 2, 31),
 	})
 }
+
 func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfDirectlyWithinInlineFragment(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragA on Pet {
@@ -82,6 +88,7 @@ func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfIndirectly(t *testi
 		testutil.RuleError(`Cannot spread fragment "fragA" within itself via fragB.`, 2, 31, 3, 31),
 	})
 }
+
 func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfIndirectlyReportsOppositeOrder(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragB on Dog { ...fragA }
@@ -90,6 +97,7 @@ func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfIndirectlyReportsOp
 		testutil.RuleError(`Cannot spread fragment "fragB" within itself via fragA.`, 2, 31, 3, 31),
 	})
 }
+
 func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfIndirectlyWithinInlineFragment(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragA on Pet {
@@ -132,6 +140,7 @@ func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfDeeply(t *testing.T
 			7, 31),
 	})
 }
+
 func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfDeeplyTwoPaths(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragA on Dog { ...fragB, ...fragC }
@@ -146,6 +155,7 @@ func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfDeeplyTwoPaths(t *t
 			4, 31),
 	})
 }
+
 func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfDeeplyTwoPaths_AltTraverseOrder(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragA on Dog { ...fragC }
@@ -160,6 +170,7 @@ func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfDeeplyTwoPaths_AltT
 			3, 31),
 	})
 }
+
 func TestValidate_NoCircularFragmentSpreads_NoSpreadingItselfDeeplyAndImmediately(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.NoFragmentCyclesRule, `
       fragment fragA on Dog { ...fragB }

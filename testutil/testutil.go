@@ -333,12 +333,14 @@ func GetHuman(id int) StarWarsChar {
 	}
 	return StarWarsChar{}
 }
+
 func GetDroid(id int) StarWarsChar {
 	if droid, ok := DroidData[id]; ok {
 		return droid
 	}
 	return StarWarsChar{}
 }
+
 func GetHero(episode interface{}) interface{} {
 	if episode == 5 {
 		return Luke
@@ -361,6 +363,7 @@ func TestParse(t *testing.T, query string) *ast.Document {
 	}
 	return astDoc
 }
+
 func TestExecute(t *testing.T, ep graphql.ExecuteParams) *graphql.Result {
 	return graphql.Execute(ep)
 }
@@ -402,7 +405,6 @@ subLoop:
 				} else {
 					return false
 				}
-
 			}
 			if subVal, ok := subVal.([]interface{}); ok {
 				if superVal, ok := superVal.([]interface{}); ok {

@@ -20,6 +20,7 @@ func TestValidate_KnownDirectives_WithNoDirectives(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownDirectives_WithKnownDirective(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.KnownDirectivesRule, `
       {
@@ -32,6 +33,7 @@ func TestValidate_KnownDirectives_WithKnownDirective(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownDirectives_WithUnknownDirective(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownDirectivesRule, `
       {
@@ -43,6 +45,7 @@ func TestValidate_KnownDirectives_WithUnknownDirective(t *testing.T) {
 		testutil.RuleError(`Unknown directive "unknown".`, 3, 13),
 	})
 }
+
 func TestValidate_KnownDirectives_WithManyUnknownDirectives(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownDirectivesRule, `
       {
@@ -62,6 +65,7 @@ func TestValidate_KnownDirectives_WithManyUnknownDirectives(t *testing.T) {
 		testutil.RuleError(`Unknown directive "unknown".`, 8, 16),
 	})
 }
+
 func TestValidate_KnownDirectives_WithWellPlacedDirectives(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.KnownDirectivesRule, `
       query Foo @onQuery {
@@ -76,6 +80,7 @@ func TestValidate_KnownDirectives_WithWellPlacedDirectives(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_KnownDirectives_WithMisplacedDirectives(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.KnownDirectivesRule, `
       query Foo @include(if: true) {

@@ -16,6 +16,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_UniqueFields(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_IdenticalFields(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment mergeIdenticalFields on Dog {
@@ -24,6 +25,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_IdenticalFields(t *testing.T) {
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_IdenticalFieldsWithIdenticalArgs(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment mergeIdenticalFieldsWithIdenticalArgs on Dog {
@@ -32,6 +34,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_IdenticalFieldsWithIdenticalArgs(
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_IdenticalFieldsWithMultipleIdenticalArgs(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment mergeIdenticalFieldsWithIdenticalArgs on Dog {
@@ -40,6 +43,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_IdenticalFieldsWithMultipleIdenti
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_IdenticalFieldsWithIdenticalDirectives(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment mergeSameFieldsWithSameDirectives on Dog {
@@ -48,6 +52,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_IdenticalFieldsWithIdenticalDirec
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_DifferentArgsWithDifferentAliases(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment differentArgsWithDifferentAliases on Dog {
@@ -56,6 +61,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_DifferentArgsWithDifferentAliases
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_DifferentDirectivesWithDifferentAliases(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment differentDirectivesWithDifferentAliases on Dog {
@@ -64,6 +70,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_DifferentDirectivesWithDifferentA
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_DifferentSkipIncludeDirectivesAccepted(t *testing.T) {
 	// Note: Differing skip/include directives don't create an ambiguous return
 	// value and are acceptable in conditions where differing runtime values
@@ -75,6 +82,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_DifferentSkipIncludeDirectivesAcc
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_SameAliasesWithDifferentFieldTargets(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment sameAliasesWithDifferentFieldTargets on Dog {
@@ -87,6 +95,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_SameAliasesWithDifferentFieldTarg
 			3, 9, 4, 9),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_SameAliasesAllowedOnNonOverlappingFields(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment sameAliasesWithDifferentFieldTargets on Pet {
@@ -99,6 +108,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_SameAliasesAllowedOnNonOverlappin
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_AliasMaskingDirectFieldAccess(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment aliasMaskingDirectFieldAccess on Dog {
@@ -111,6 +121,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_AliasMaskingDirectFieldAccess(t *
 			3, 9, 4, 9),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_DifferentArgs_SecondAddsAnArgument(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment conflictingArgs on Dog {
@@ -123,6 +134,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_DifferentArgs_SecondAddsAnArgumen
 			3, 9, 4, 9),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_DifferentArgs_SecondMissingAnArgument(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment conflictingArgs on Dog {
@@ -135,6 +147,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_DifferentArgs_SecondMissingAnArgu
 			3, 9, 4, 9),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ConflictingArgs(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       fragment conflictingArgs on Dog {
@@ -147,6 +160,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ConflictingArgs(t *testing.T) {
 			3, 9, 4, 9),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_AllowDifferentArgsWhereNoConflictIsPossible(t *testing.T) {
 	// This is valid since no object can be both a "Dog" and a "Cat", thus
 	// these fields can never overlap.
@@ -161,6 +175,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_AllowDifferentArgsWhereNoConflict
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_EncountersConflictInFragments(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       {
@@ -179,6 +194,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_EncountersConflictInFragments(t *
 			7, 9, 10, 9),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReportsEachConflictOnce(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       {
@@ -214,6 +230,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReportsEachConflictOnce(t *testin
 			14, 11, 21, 9),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_DeepConflict(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       {
@@ -233,6 +250,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_DeepConflict(t *testing.T) {
 			7, 11),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_DeepConflictWithMultipleIssues(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       {
@@ -257,6 +275,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_DeepConflictWithMultipleIssues(t 
 			9, 11),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_VeryDeepConflict(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       {
@@ -283,6 +302,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_VeryDeepConflict(t *testing.T) {
 			10, 13),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReportsDeepConflictToNearestCommonAncestor(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       {
@@ -310,6 +330,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReportsDeepConflictToNearestCommo
 			8, 13),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReportsDeepConflictToNearestCommonAncestorInFragments(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       {
@@ -345,6 +366,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReportsDeepConflictToNearestCommo
 			16, 13),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReportsDeepConflictInNestedFragments(t *testing.T) {
 	testutil.ExpectFailsRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
       {
@@ -382,6 +404,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReportsDeepConflictInNestedFragme
 			18, 9),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_IgnoresUnknownFragments(t *testing.T) {
 	testutil.ExpectPassesRule(t, graphql.OverlappingFieldsCanBeMergedRule, `
     {
@@ -397,10 +420,12 @@ func TestValidate_OverlappingFieldsCanBeMerged_IgnoresUnknownFragments(t *testin
     `)
 }
 
-var someBoxInterface *graphql.Interface
-var stringBoxObject *graphql.Object
-var intBoxObject *graphql.Object
-var schema graphql.Schema
+var (
+	someBoxInterface *graphql.Interface
+	stringBoxObject  *graphql.Object
+	intBoxObject     *graphql.Object
+	schema           graphql.Schema
+)
 
 func init() {
 	someBoxInterface = graphql.NewInterface(graphql.InterfaceConfig{
@@ -475,7 +500,7 @@ func init() {
 			}
 		}),
 	})
-	var nonNullStringBox1Interface = graphql.NewInterface(graphql.InterfaceConfig{
+	nonNullStringBox1Interface := graphql.NewInterface(graphql.InterfaceConfig{
 		Name: "NonNullStringBox1",
 		ResolveType: func(p graphql.ResolveTypeParams) *graphql.Object {
 			return stringBoxObject
@@ -503,7 +528,7 @@ func init() {
 			},
 		},
 	})
-	var nonNullStringBox2Interface = graphql.NewInterface(graphql.InterfaceConfig{
+	nonNullStringBox2Interface := graphql.NewInterface(graphql.InterfaceConfig{
 		Name: "NonNullStringBox2",
 		ResolveType: func(p graphql.ResolveTypeParams) *graphql.Object {
 			return stringBoxObject
@@ -532,7 +557,7 @@ func init() {
 		},
 	})
 
-	var connectionObject = graphql.NewObject(graphql.ObjectConfig{
+	connectionObject := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Connection",
 		Fields: graphql.Fields{
 			"edges": &graphql.Field{
@@ -605,6 +630,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Conf
 			8, 15),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_CompatibleReturnShapesOnDifferentReturnTypes(t *testing.T) {
 	// In this case `deepBox` returns `SomeBox` in the first usage, and
 	// `StringBox` in the second usage. These return types are not the same!
@@ -626,6 +652,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Comp
       }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypesDespiteNoOverlap(t *testing.T) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -645,6 +672,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
 			8, 15),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_ReportsCorrectlyWhenANonExclusiveFollosAnExclusive(t *testing.T) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -699,6 +727,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Repo
 			42, 11),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypeNullabilityDespiteNoOverlap(t *testing.T) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -718,6 +747,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
 			8, 15),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingReturnTypeListDespiteNoOverlap(t *testing.T) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -763,6 +793,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
 			10, 15),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingSubfields(t *testing.T) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -787,6 +818,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
 			7, 17),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_DisallowsDifferingDeepReturnTypesDespiteNoOverlap(t *testing.T) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -812,6 +844,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Disa
 			11, 17),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_AllowsNonConflictingOverlappingTypes(t *testing.T) {
 	testutil.ExpectPassesRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -826,6 +859,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Allo
         }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_SameWrappedScalarReturnTypes(t *testing.T) {
 	testutil.ExpectPassesRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -840,6 +874,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Same
         }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_AllowsInlineTypelessFragments(t *testing.T) {
 	testutil.ExpectPassesRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -850,6 +885,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Allo
         }
     `)
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_ComparesDeepTypesIncludingList(t *testing.T) {
 	testutil.ExpectFailsRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {
@@ -882,6 +918,7 @@ func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_Comp
 			16, 15),
 	})
 }
+
 func TestValidate_OverlappingFieldsCanBeMerged_ReturnTypesMustBeUnambiguous_IgnoresUnknownTypes(t *testing.T) {
 	testutil.ExpectPassesRuleWithSchema(t, &schema, graphql.OverlappingFieldsCanBeMergedRule, `
         {

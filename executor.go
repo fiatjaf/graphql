@@ -68,7 +68,6 @@ func Execute(p ExecuteParams) (result *Result) {
 			Result:        result,
 			Context:       p.Context,
 		})
-
 		if err != nil {
 			result.Errors = append(result.Errors, gqlerrors.FormatError(err.(error)))
 			resultChannel <- result
@@ -187,7 +186,6 @@ func executeOperation(p executeOperationParams) *Result {
 		return executeFieldsSerially(executeFieldsParams)
 	}
 	return executeFields(executeFieldsParams)
-
 }
 
 // Extracts the root type of the operation from the schema.
@@ -286,7 +284,6 @@ func executeFields(p executeFieldsParams) *Result {
 }
 
 func executeSubFields(p executeFieldsParams) map[string]interface{} {
-
 	if p.Source == nil {
 		p.Source = map[string]interface{}{}
 	}
@@ -514,7 +511,6 @@ func shouldIncludeNode(eCtx *executionContext, directives []*ast.Directive) bool
 
 // Determines if a fragment is applicable to the given type.
 func doesFragmentConditionMatch(eCtx *executionContext, fragment ast.Node, ttype *Object) bool {
-
 	switch fragment := fragment.(type) {
 	case *ast.FragmentDefinition:
 		typeConditionAST := fragment.TypeCondition
@@ -565,7 +561,6 @@ func doesFragmentConditionMatch(eCtx *executionContext, fragment ast.Node, ttype
 
 // Implements the logic to compute the key of a given field’s entry
 func getFieldEntryKey(node *ast.Field) string {
-
 	if node.Alias != nil && node.Alias.Value != "" {
 		return node.Alias.Value
 	}
@@ -685,7 +680,6 @@ func completeValueCatchingError(eCtx *executionContext, returnType Type, fieldAS
 }
 
 func completeValue(eCtx *executionContext, returnType Type, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result interface{}) interface{} {
-
 	resultVal := reflect.ValueOf(result)
 	if resultVal.IsValid() && resultVal.Kind() == reflect.Func {
 		return func() interface{} {
@@ -744,7 +738,6 @@ func completeValue(eCtx *executionContext, returnType Type, fieldASTs []*ast.Fie
 	// Not reachable. All possible output types have been considered.
 	err := invariantf(false,
 		`Cannot complete value of unexpected type "%v."`, returnType)
-
 	if err != nil {
 		panic(gqlerrors.FormatError(err))
 	}
@@ -752,7 +745,6 @@ func completeValue(eCtx *executionContext, returnType Type, fieldASTs []*ast.Fie
 }
 
 func completeThunkValueCatchingError(eCtx *executionContext, returnType Type, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result interface{}) (completed interface{}) {
-
 	// catch any panic invoked from the propertyFn (thunk)
 	defer func() {
 		if r := recover(); r != nil {
@@ -784,7 +776,6 @@ func completeThunkValueCatchingError(eCtx *executionContext, returnType Type, fi
 // completeAbstractValue completes value of an Abstract type (Union / Interface) by determining the runtime type
 // of that value, then completing based on that type.
 func completeAbstractValue(eCtx *executionContext, returnType Abstract, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result interface{}) interface{} {
-
 	var runtimeType *Object
 
 	resolveTypeParams := ResolveTypeParams{
@@ -819,7 +810,6 @@ func completeAbstractValue(eCtx *executionContext, returnType Abstract, fieldAST
 
 // completeObjectValue complete an Object value by executing all sub-selections.
 func completeObjectValue(eCtx *executionContext, returnType *Object, fieldASTs []*ast.Field, info ResolveInfo, path *ResponsePath, result interface{}) interface{} {
-
 	// If there is an isTypeOf predicate function, call it with the
 	// current result. If isTypeOf returns false, then raise an error rather
 	// than continuing execution.
@@ -888,7 +878,6 @@ func completeListValue(eCtx *executionContext, returnType *List, fieldASTs []*as
 		resultVal.IsValid() && isIterable(result),
 		"User Error: expected iterable, but did not find one "+
 			"for field %v.%v.", parentTypeName, info.FieldName)
-
 	if err != nil {
 		panic(gqlerrors.FormatError(err))
 	}
@@ -1021,7 +1010,6 @@ func DefaultResolveFn(p ResolveParams) (interface{}, error) {
 // added to the query type, but that would require mutating type
 // definitions, which would cause issues.
 func getFieldDef(schema Schema, parentType *Object, fieldName string) *FieldDefinition {
-
 	if parentType == nil {
 		return nil
 	}

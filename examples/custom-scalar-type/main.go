@@ -87,7 +87,7 @@ func main() {
 						// id := p.Args["id"]
 						// log.Printf("id from arguments: %+v", id)
 						customers := []Customer{
-							Customer{ID: NewCustomID("fb278f2a4a13f")},
+							{ID: NewCustomID("fb278f2a4a13f")},
 						}
 						return customers, nil
 					},
