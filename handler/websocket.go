@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -51,7 +52,7 @@ var upgrader = websocket.Upgrader{
 }
 
 type GraphQLWSMessage struct {
-	ID      string          `json:"id"`
+	ID      any             `json:"id"`
 	Type    string          `json:"type"`
 	Payload json.RawMessage `json:"payload"`
 }
@@ -115,7 +116,8 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 				var msg GraphQLWSMessage
 				err := json.Unmarshal(message, &msg)
 				if err != nil {
-					ws.WriteJSON(GraphQLWSMessage{Type: "error"})
+					b, _ := json.Marshal(err.Error())
+					ws.WriteJSON(GraphQLWSMessage{Type: "error", Payload: b})
 					return
 				}
 
@@ -126,12 +128,13 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 					var payload GraphQLWSSubscriptionPayload
 					err := json.Unmarshal(msg.Payload, &payload)
 					if err != nil {
-						ws.WriteJSON(GraphQLWSMessage{Type: "error"})
+						b, _ := json.Marshal(err.Error())
+						ws.WriteJSON(GraphQLWSMessage{Type: "error", Payload: b})
 						return
 					}
 
 					cancellableCtx, cancel := context.WithCancel(ctx)
-					h.subscriptionCancellers.Store(msg.ID, cancel)
+					h.subscriptionCancellers.Store(fmt.Sprintf("%v", msg.ID), cancel)
 
 					params := graphql.Params{
 						Schema:         *h.Schema,
@@ -151,8 +154,8 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 					}
 				case "stop":
 					// cancel the context for this subscription such that we stop streaming graphql data into nowhere
-					if cancel, ok := h.subscriptionCancellers.Load(msg.ID); ok {
-						h.subscriptionCancellers.Delete(msg.ID)
+					if cancel, ok := h.subscriptionCancellers.Load(fmt.Sprintf("%v", msg.ID)); ok {
+						h.subscriptionCancellers.Delete(fmt.Sprintf("%v", msg.ID))
 						cancel()
 					}
 				}
