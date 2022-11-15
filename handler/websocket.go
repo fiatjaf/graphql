@@ -103,6 +103,8 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 				if websocket.IsUnexpectedCloseError(
 					err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 					log.Printf("unexpected close error: %s", err.Error())
+				} else {
+					log.Printf("error on read: %s", err.Error())
 				}
 				break
 			}
