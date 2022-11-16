@@ -177,14 +177,9 @@ func BindArg(obj interface{}, tags ...string) FieldConfigArgument {
 	return config
 }
 
-func inArray(slice interface{}, item interface{}) bool {
-	s := reflect.ValueOf(slice)
-	if s.Kind() != reflect.Slice {
-		panic("inArray() given a non-slice type")
-	}
-
-	for i := 0; i < s.Len(); i++ {
-		if reflect.DeepEqual(item, s.Index(i).Interface()) {
+func inArray[E any](slice []E, item E) bool {
+	for i := 0; i < len(slice); i++ {
+		if reflect.DeepEqual(item, slice[i]) {
 			return true
 		}
 	}

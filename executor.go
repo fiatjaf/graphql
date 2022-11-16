@@ -52,13 +52,6 @@ func Execute(p ExecuteParams) (result *Result) {
 	go func() {
 		result := &Result{}
 
-		defer func() {
-			if err := recover(); err != nil {
-				result.Errors = append(result.Errors, gqlerrors.FormatError(err.(error)))
-			}
-			resultChannel <- result
-		}()
-
 		exeContext, err := buildExecutionContext(buildExecutionCtxParams{
 			Schema:        p.Schema,
 			Root:          p.Root,
@@ -576,18 +569,14 @@ type resolveFieldResultState struct {
 }
 
 func handleFieldError(
-	r interface{},
+	err error,
 	fieldNodes []ast.Node,
 	path *ResponsePath,
 	returnType Output,
 	eCtx *executionContext,
 ) {
-	err := NewLocatedErrorWithPath(r, fieldNodes, path.AsArray())
-	// send panic upstream
-	if _, ok := returnType.(*NonNull); ok {
-		panic(err)
-	}
-	eCtx.Errors = append(eCtx.Errors, gqlerrors.FormatError(err))
+	lerr := NewLocatedErrorWithPath(err, fieldNodes, path.AsArray())
+	eCtx.Errors = append(eCtx.Errors, gqlerrors.FormatError(lerr))
 }
 
 // Resolves the field on the given source object. In particular, this
@@ -599,19 +588,9 @@ func resolveField(
 	parentType *Object,
 	source interface{},
 	fieldASTs []*ast.Field,
-	path *ResponsePath) (
-	result interface{},
-	resultState resolveFieldResultState,
-) {
-	// catch panic from resolveFn
+	path *ResponsePath,
+) (result interface{}, resultState resolveFieldResultState) {
 	var returnType Output
-	defer func() (interface{}, resolveFieldResultState) {
-		if r := recover(); r != nil {
-			handleFieldError(r, FieldASTsToNodeASTs(fieldASTs), path, returnType, eCtx)
-			return result, resultState
-		}
-		return result, resultState
-	}()
 
 	fieldAST := fieldASTs[0]
 	fieldName := ""
@@ -648,57 +627,32 @@ func resolveField(
 		VariableValues: eCtx.VariableValues,
 	}
 
-	var resolveFnError error
-
 	extErrs, resolveFieldFinishFn := handleExtensionsResolveFieldDidStart(eCtx.Schema.extensions, eCtx, &info)
 	if len(extErrs) != 0 {
 		eCtx.Errors = append(eCtx.Errors, extErrs...)
 	}
 
+	var resolveFnError error
 	result, resolveFnError = resolveFn(ResolveParams{
 		Source:  source,
 		Args:    args,
 		Info:    info,
 		Context: eCtx.Context,
 	})
-
 	extErrs = resolveFieldFinishFn(result, resolveFnError)
 	if len(extErrs) != 0 {
 		eCtx.Errors = append(eCtx.Errors, extErrs...)
 	}
-
 	if resolveFnError != nil {
-		panic(resolveFnError)
+		handleFieldError(resolveFnError, FieldASTsToNodeASTs(fieldASTs), path, returnType, eCtx)
+		return nil, resultState
 	}
 
-	completed := completeValueCatchingError(eCtx, returnType, fieldASTs, info, path, result)
+	completed, err := completeValue(eCtx, returnType, fieldASTs, info, path, result)
+	if err != nil {
+		handleFieldError(err, FieldASTsToNodeASTs(fieldASTs), path, returnType, eCtx)
+	}
 	return completed, resultState
-}
-
-func completeValueCatchingError(
-	eCtx *executionContext,
-	returnType Type,
-	fieldASTs []*ast.Field,
-	info ResolveInfo,
-	path *ResponsePath,
-	result interface{}) (
-	completed interface{},
-) {
-	// catch panic
-	defer func() interface{} {
-		if r := recover(); r != nil {
-			handleFieldError(r, FieldASTsToNodeASTs(fieldASTs), path, returnType, eCtx)
-			return completed
-		}
-		return completed
-	}()
-
-	if returnType, ok := returnType.(*NonNull); ok {
-		completed := completeValue(eCtx, returnType, fieldASTs, info, path, result)
-		return completed
-	}
-	completed = completeValue(eCtx, returnType, fieldASTs, info, path, result)
-	return completed
 }
 
 func completeValue(
@@ -708,32 +662,35 @@ func completeValue(
 	info ResolveInfo,
 	path *ResponsePath,
 	result interface{},
-) interface{} {
+) (interface{}, error) {
 	resultVal := reflect.ValueOf(result)
 	if resultVal.IsValid() && resultVal.Kind() == reflect.Func {
-		return func() interface{} {
+		return func() (interface{}, error) {
 			return completeThunkValueCatchingError(eCtx, returnType, fieldASTs, info, path, result)
-		}
+		}, nil
 	}
 
 	// If field type is NonNull, complete for inner type, and throw field error
 	// if result is null.
 	if returnType, ok := returnType.(*NonNull); ok {
-		completed := completeValue(eCtx, returnType.OfType, fieldASTs, info, path, result)
+		completed, err := completeValue(eCtx, returnType.OfType, fieldASTs, info, path, result)
+		if err != nil {
+			return nil, err
+		}
 		if completed == nil {
 			err := NewLocatedErrorWithPath(
 				fmt.Sprintf("Cannot return null for non-nullable field %v.%v.", info.ParentType, info.FieldName),
 				FieldASTsToNodeASTs(fieldASTs),
 				path.AsArray(),
 			)
-			panic(gqlerrors.FormatError(err))
+			return nil, err
 		}
-		return completed
+		return completed, nil
 	}
 
 	// If result value is null-ish (null, undefined, or NaN) then return null.
 	if isNullish(result) {
-		return nil
+		return nil, nil
 	}
 
 	// If field type is List, complete each item in the list with the inner type
@@ -744,10 +701,10 @@ func completeValue(
 	// If field type is a leaf type, Scalar or Enum, serialize to a valid value,
 	// returning null if serialization is not possible.
 	if returnType, ok := returnType.(*Scalar); ok {
-		return completeLeafValue(returnType, result)
+		return completeLeafValue(returnType, result), nil
 	}
 	if returnType, ok := returnType.(*Enum); ok {
-		return completeLeafValue(returnType, result)
+		return completeLeafValue(returnType, result), nil
 	}
 
 	// If field type is an abstract type, Interface or Union, determine the
@@ -765,12 +722,16 @@ func completeValue(
 	}
 
 	// Not reachable. All possible output types have been considered.
-	err := invariantf(false,
-		`Cannot complete value of unexpected type "%v."`, returnType)
+	err := invariantf(
+		false,
+		`Cannot complete value of unexpected type "%v."`,
+		returnType,
+	)
 	if err != nil {
-		panic(gqlerrors.FormatError(err))
+		return nil, err
 	}
-	return nil
+
+	return nil, nil
 }
 
 func completeThunkValueCatchingError(
@@ -779,35 +740,26 @@ func completeThunkValueCatchingError(
 	fieldASTs []*ast.Field,
 	info ResolveInfo,
 	path *ResponsePath,
-	result interface{}) (
-	completed interface{},
-) {
-	// catch any panic invoked from the propertyFn (thunk)
-	defer func() {
-		if r := recover(); r != nil {
-			handleFieldError(r, FieldASTsToNodeASTs(fieldASTs), path, returnType, eCtx)
-		}
-	}()
-
+	result interface{},
+) (interface{}, error) {
 	propertyFn, ok := result.(func() (interface{}, error))
 	if !ok {
 		err := gqlerrors.NewFormattedError("Error resolving func. Expected `func() (interface{}, error)` signature")
-		panic(gqlerrors.FormatError(err))
+		return nil, err
 	}
+
 	fnResult, err := propertyFn()
 	if err != nil {
-		panic(gqlerrors.FormatError(err))
+		return nil, err
 	}
 
 	result = fnResult
 
 	if returnType, ok := returnType.(*NonNull); ok {
-		completed := completeValue(eCtx, returnType, fieldASTs, info, path, result)
-		return completed
+		return completeValue(eCtx, returnType, fieldASTs, info, path, result)
 	}
-	completed = completeValue(eCtx, returnType, fieldASTs, info, path, result)
 
-	return completed
+	return completeValue(eCtx, returnType, fieldASTs, info, path, result)
 }
 
 // completeAbstractValue completes value of an Abstract type (Union / Interface) by determining the runtime type
@@ -819,7 +771,7 @@ func completeAbstractValue(
 	info ResolveInfo,
 	path *ResponsePath,
 	result interface{},
-) interface{} {
+) (interface{}, error) {
 	var runtimeType *Object
 
 	resolveTypeParams := ResolveTypeParams{
@@ -835,18 +787,20 @@ func completeAbstractValue(
 		runtimeType = defaultResolveTypeFn(resolveTypeParams, returnType)
 	}
 
-	err := invariantf(runtimeType != nil, `Abstract type %v must resolve to an Object type at runtime `+
-		`for field %v.%v with value "%v", received "%v".`, returnType, info.ParentType, info.FieldName, result, runtimeType,
+	err := invariantf(
+		runtimeType != nil,
+		`Abstract type %v must resolve to an Object type at runtime for field %v.%v with value "%v", received "%v".`,
+		returnType, info.ParentType, info.FieldName, result, runtimeType,
 	)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	if !eCtx.Schema.IsPossibleType(returnType, runtimeType) {
-		panic(gqlerrors.NewFormattedError(
-			fmt.Sprintf(`Runtime Object type "%v" is not a possible type `+
-				`for "%v".`, runtimeType, returnType),
-		))
+		return nil,
+			gqlerrors.NewFormattedError(
+				fmt.Sprintf(`Runtime Object type "%v" is not a possible type for "%v".`, runtimeType, returnType),
+			)
 	}
 
 	return completeObjectValue(eCtx, runtimeType, fieldASTs, info, path, result)
@@ -860,7 +814,7 @@ func completeObjectValue(
 	info ResolveInfo,
 	path *ResponsePath,
 	result interface{},
-) interface{} {
+) (interface{}, error) {
 	// If there is an isTypeOf predicate function, call it with the
 	// current result. If isTypeOf returns false, then raise an error rather
 	// than continuing execution.
@@ -871,9 +825,9 @@ func completeObjectValue(
 			Context: eCtx.Context,
 		}
 		if !returnType.IsTypeOf(p) {
-			panic(gqlerrors.NewFormattedError(
+			return nil, gqlerrors.NewFormattedError(
 				fmt.Sprintf(`Expected value of type "%v" but got: %T.`, returnType, result),
-			))
+			)
 		}
 	}
 
@@ -903,7 +857,7 @@ func completeObjectValue(
 		Fields:           subFieldASTs,
 		Path:             path,
 	}
-	return executeSubFields(executeFieldsParams)
+	return executeSubFields(executeFieldsParams), nil
 }
 
 // completeLeafValue complete a leaf value (Scalar / Enum) by serializing to a valid value, returning nil if serialization is not possible.
@@ -923,7 +877,7 @@ func completeListValue(
 	info ResolveInfo,
 	path *ResponsePath,
 	result interface{},
-) interface{} {
+) (interface{}, error) {
 	resultVal := reflect.ValueOf(result)
 	if resultVal.Kind() == reflect.Ptr {
 		resultVal = resultVal.Elem()
@@ -937,7 +891,7 @@ func completeListValue(
 		"User Error: expected iterable, but did not find one "+
 			"for field %v.%v.", parentTypeName, info.FieldName)
 	if err != nil {
-		panic(gqlerrors.FormatError(err))
+		return nil, err
 	}
 
 	itemType := returnType.OfType
@@ -945,10 +899,14 @@ func completeListValue(
 	for i := 0; i < resultVal.Len(); i++ {
 		val := resultVal.Index(i).Interface()
 		fieldPath := path.WithKey(i)
-		completedItem := completeValueCatchingError(eCtx, itemType, fieldASTs, info, fieldPath, val)
+		completedItem, err := completeValue(eCtx, itemType, fieldASTs, info, fieldPath, val)
+		if err != nil {
+			return nil, err
+		}
+
 		completedResults = append(completedResults, completedItem)
 	}
-	return completedResults
+	return completedResults, nil
 }
 
 // defaultResolveTypeFn If a resolveType function is not given, then a default resolve behavior is
