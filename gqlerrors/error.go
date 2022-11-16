@@ -25,15 +25,38 @@ func (g Error) Error() string {
 	return fmt.Sprintf("%v", g.Message)
 }
 
-func NewError(message string, nodes []ast.Node, stack string, source *source.Source, positions []int, origError error) *Error {
+func NewError(
+	message string,
+	nodes []ast.Node,
+	stack string,
+	source *source.Source,
+	positions []int,
+	origError error,
+) *Error {
 	return newError(message, nodes, stack, source, positions, nil, origError)
 }
 
-func NewErrorWithPath(message string, nodes []ast.Node, stack string, source *source.Source, positions []int, path []interface{}, origError error) *Error {
+func NewErrorWithPath(
+	message string,
+	nodes []ast.Node,
+	stack string,
+	source *source.Source,
+	positions []int,
+	path []interface{},
+	origError error,
+) *Error {
 	return newError(message, nodes, stack, source, positions, path, origError)
 }
 
-func newError(message string, nodes []ast.Node, stack string, source *source.Source, positions []int, path []interface{}, origError error) *Error {
+func newError(
+	message string,
+	nodes []ast.Node,
+	stack string,
+	source *source.Source,
+	positions []int,
+	path []interface{},
+	origError error,
+) *Error {
 	if stack == "" && message != "" {
 		stack = message
 	}

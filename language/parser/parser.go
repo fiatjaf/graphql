@@ -1569,7 +1569,15 @@ func unexpectedEmpty(parser *Parser, beginLoc int, openKind, closeKind lexer.Tok
 // and ends with a lex token of closeKind. Advances the parser
 // to the next lex token after the closing token.
 // if zinteger is true, len(nodes) > 0
-func reverse(parser *Parser, openKind lexer.TokenKind, parseFn parseFn, closeKind lexer.TokenKind, zinteger bool) ([]interface{}, error) {
+func reverse(
+	parser *Parser,
+	openKind lexer.TokenKind,
+	parseFn parseFn,
+	closeKind lexer.TokenKind,
+	zinteger bool) (
+	[]interface{},
+	error,
+) {
 	token, err := expect(parser, openKind)
 	if err != nil {
 		return nil, err

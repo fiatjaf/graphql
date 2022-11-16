@@ -191,7 +191,12 @@ func quotedOrList(slice []string) string {
 	return quoted[0]
 }
 
-func UndefinedFieldMessage(fieldName string, ttypeName string, suggestedTypeNames []string, suggestedFieldNames []string) string {
+func UndefinedFieldMessage(
+	fieldName string,
+	ttypeName string,
+	suggestedTypeNames []string,
+	suggestedFieldNames []string,
+) string {
 	message := fmt.Sprintf(`Cannot query field "%v" on type "%v".`, fieldName, ttypeName)
 	if len(suggestedTypeNames) > 0 {
 		message = fmt.Sprintf(`%v Did you mean to use an inline fragment on %v?`, message, quotedOrList(suggestedTypeNames))

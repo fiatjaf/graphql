@@ -56,7 +56,12 @@ func ValidateDocument(schema *Schema, astDoc *ast.Document, rules []ValidationRu
 // @internal
 // Had to expose it to unit test experimental customizable validation feature,
 // but not meant for public consumption
-func VisitUsingRules(schema *Schema, typeInfo *TypeInfo, astDoc *ast.Document, rules []ValidationRuleFn) []gqlerrors.FormattedError {
+func VisitUsingRules(
+	schema *Schema,
+	typeInfo *TypeInfo,
+	astDoc *ast.Document,
+	rules []ValidationRuleFn,
+) []gqlerrors.FormattedError {
 	context := NewValidationContext(schema, astDoc, typeInfo)
 	visitors := []*visitor.VisitorOptions{}
 
@@ -186,7 +191,10 @@ func (ctx *ValidationContext) FragmentSpreads(node *ast.SelectionSet) []*ast.Fra
 	return spreads
 }
 
-func (ctx *ValidationContext) RecursivelyReferencedFragments(operation *ast.OperationDefinition) []*ast.FragmentDefinition {
+func (
+	ctx *ValidationContext) RecursivelyReferencedFragments(
+	operation *ast.OperationDefinition,
+) []*ast.FragmentDefinition {
 	if fragments, ok := ctx.recursivelyReferencedFragments[operation]; ok && fragments != nil {
 		return fragments
 	}
