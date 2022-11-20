@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	syncmap "github.com/SaveTheRbtz/generic-sync-map-go"
 	"github.com/fiatjaf/graphql"
 	"github.com/gorilla/websocket"
 )
@@ -28,8 +29,9 @@ const (
 )
 
 type WebSocket struct {
-	conn  *websocket.Conn
-	mutex sync.Mutex
+	conn                   *websocket.Conn
+	mutex                  sync.Mutex
+	subscriptionCancellers syncmap.MapOf[string, context.CancelFunc]
 }
 
 func (ws *WebSocket) WriteJSON(any interface{}) error {
@@ -79,8 +81,8 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 		ticker.Stop()
 		conn.Close()
 
-		h.subscriptionCancellers.Range(func(id string, cancel context.CancelFunc) bool {
-			h.subscriptionCancellers.Delete(id)
+		ws.subscriptionCancellers.Range(func(id string, cancel context.CancelFunc) bool {
+			ws.subscriptionCancellers.Delete(id)
 			cancel()
 			return true
 		})
@@ -136,7 +138,7 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 					}
 
 					cancellableCtx, cancel := context.WithCancel(ctx)
-					h.subscriptionCancellers.Store(fmt.Sprintf("%v", msg.ID), cancel)
+					ws.subscriptionCancellers.Store(fmt.Sprintf("%v", msg.ID), cancel)
 
 					params := graphql.Params{
 						Schema:         *h.Schema,
@@ -156,8 +158,8 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 					}
 				case "stop":
 					// cancel the context for this subscription such that we stop streaming graphql data into nowhere
-					if cancel, ok := h.subscriptionCancellers.Load(fmt.Sprintf("%v", msg.ID)); ok {
-						h.subscriptionCancellers.Delete(fmt.Sprintf("%v", msg.ID))
+					if cancel, ok := ws.subscriptionCancellers.Load(fmt.Sprintf("%v", msg.ID)); ok {
+						ws.subscriptionCancellers.Delete(fmt.Sprintf("%v", msg.ID))
 						cancel()
 					}
 				}
