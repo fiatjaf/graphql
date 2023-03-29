@@ -50,7 +50,7 @@ var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 	CheckOrigin:     func(r *http.Request) bool { return true },
-	Subprotocols:    []string{"graphql-ws"},
+	Subprotocols:    []string{"graphql-ws", "graphql-transport-ws"},
 }
 
 type GraphQLWSMessage struct {
@@ -128,7 +128,16 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 				switch msg.Type {
 				case "connection_init":
 					ws.WriteJSON(GraphQLWSMessage{Type: "connection_ack"})
-				case "start":
+
+					// clients may send headers in this object, we can use this to modify the context
+					// this works because "connection_init" is always the first message
+					if h.ModifyContextOnHeaders != nil {
+						var headers map[string]string
+						if err := json.Unmarshal(msg.Payload, &headers); err == nil {
+							ctx = h.ModifyContextOnHeaders(ctx, headers)
+						}
+					}
+				case "subscribe", "start":
 					var payload GraphQLWSSubscriptionPayload
 					err := json.Unmarshal(msg.Payload, &payload)
 					if err != nil {

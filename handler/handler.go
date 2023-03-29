@@ -17,14 +17,15 @@ const (
 type ResultCallbackFn func(ctx context.Context, params *graphql.Params, result *graphql.Result, responseBody []byte)
 
 type Handler struct {
-	Schema           *graphql.Schema
-	pretty           bool
-	graphiql         bool
-	playground       bool
-	websocket        bool
-	rootObjectFn     RootObjectFn
-	resultCallbackFn ResultCallbackFn
-	formatErrorFn    func(err error) gqlerrors.FormattedError
+	Schema                 *graphql.Schema
+	ModifyContextOnHeaders func(ctx context.Context, headers map[string]string) context.Context
+	pretty                 bool
+	graphiql               bool
+	playground             bool
+	websocket              bool
+	rootObjectFn           RootObjectFn
+	resultCallbackFn       ResultCallbackFn
+	formatErrorFn          func(err error) gqlerrors.FormattedError
 }
 
 type RequestOptions struct {
