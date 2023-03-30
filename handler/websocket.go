@@ -137,7 +137,14 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 							ctx = h.ModifyContextOnHeaders(ctx, headers)
 						}
 					}
+
 				case "subscribe", "start":
+					// this will be "subscribe" for graphiql and "start" for playground and zebedee-app
+					dataMessageName, _ := map[string]string{
+						"subscribe": "next",
+						"start":     "data",
+					}[msg.Type]
+
 					var payload GraphQLWSSubscriptionPayload
 					err := json.Unmarshal(msg.Payload, &payload)
 					if err != nil {
@@ -161,8 +168,10 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 						b, _ := json.Marshal(result)
 						ws.WriteJSON(GraphQLWSMessage{
 							ID:      msg.ID,
-							Type:    "data",
 							Payload: json.RawMessage(b),
+
+							// this will be "next" for graphiql and "data" for playground or zebedee-app
+							Type: dataMessageName,
 						})
 					}
 				case "stop":
