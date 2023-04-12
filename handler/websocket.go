@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
 	syncmap "github.com/SaveTheRbtz/generic-sync-map-go"
 	"github.com/fiatjaf/graphql"
+	"github.com/fiatjaf/graphql/gqlerrors"
 	"github.com/gorilla/websocket"
 )
 
@@ -163,17 +165,38 @@ func (h *Handler) ContextWebsocketHandler(ctx context.Context, w http.ResponseWr
 						OperationName:  payload.OperationName,
 						Context:        cancellableCtx,
 					}
-					ch := graphql.DoAsync(params)
-					for result := range ch {
+
+					writeResult := func(result *graphql.Result) {
 						b, _ := json.Marshal(result)
 						ws.WriteJSON(GraphQLWSMessage{
 							ID:      msg.ID,
 							Payload: json.RawMessage(b),
 
-							// this will be "next" for graphiql and "data" for playground or zebedee-app
+							// this will be "next" for graphiql and "data" for graphql-playground
 							Type: dataMessageName,
 						})
 					}
+
+					if strings.HasPrefix(strings.TrimLeft(payload.Query, " "), "subscription") {
+						// subscription
+						ch := graphql.DoAsync(params)
+						for result := range ch {
+							writeResult(result)
+						}
+					} else {
+						// query or mutation
+						result := graphql.Do(params)
+						if formatErrorFn := h.formatErrorFn; formatErrorFn != nil && len(result.Errors) > 0 {
+							formatted := make([]gqlerrors.FormattedError, len(result.Errors))
+							for i, formattedError := range result.Errors {
+								formatted[i] = formatErrorFn(formattedError.OriginalError())
+							}
+							result.Errors = formatted
+						}
+						writeResult(result)
+						cancel() // cancel the context here
+					}
+
 				case "stop":
 					// cancel the context for this subscription such that we stop streaming graphql data into nowhere
 					if cancel, ok := ws.subscriptionCancellers.Load(fmt.Sprintf("%v", msg.ID)); ok {
